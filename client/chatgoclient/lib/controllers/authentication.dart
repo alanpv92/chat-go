@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:chatgoclient/controllers/base.dart';
+import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/custom%20types/custom_types.dart';
 import 'package:chatgoclient/data/enums/app_enums.dart';
 import 'package:chatgoclient/data/models/request/login.dart';
@@ -77,26 +78,6 @@ class AuthenticationController extends BaseController {
 
   getAuthModeToggleText() => _authModeToggleButtonText;
 
-  Future<void> loginUser(
-      {required String email, required String password}) async {
-    final response = await _authenticationService.loginUser(
-        loginRequest: LoginRequest(email: email, password: password));
-    log(response.toString());
-    //perfrom actions based after building ui
-  }
-
-  Future<void> registerUser(
-      {required String email,
-      required String password,
-      required String userName}) async {
-    final response = await _authenticationService.registerUser(
-        registerRequest: RegisterRequest(
-                email: email, password: password, userName: userName)
-            .getRequestData());
-    log(response.toString());
-    //perfrom actions based after building ui
-  }
-
   Future authenticateUser() async {
     if (!formKey.currentState!.validate()) {
       return;
@@ -118,7 +99,9 @@ class AuthenticationController extends BaseController {
 
     authenticationResponse.fold((l) {
       CustomSnackBar.instance.showError(errorText: l);
-    }, (r) => print('login sucessfull'));
+    },
+        (r) => UserMangementController.instance
+            .populateAndNavigateOnAuthentication(user: r));
     setLoadingStatus(false);
   }
 }

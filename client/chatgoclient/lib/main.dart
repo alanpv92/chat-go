@@ -2,6 +2,7 @@ import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/authentication.dart';
 import 'package:chatgoclient/controllers/theme.dart';
 import 'package:chatgoclient/manager/asset.dart';
+import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/theme.dart';
 import 'package:chatgoclient/ui/screens/authentication.dart';
 import 'package:chatgoclient/ui/widgets/providers/theme.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale, 
+      getPages: RouteManger.getPages(),
       home: const AuthenticationScreen(),
     );
   }
