@@ -26,10 +26,10 @@ class AuthenticationService implements AuthenticationInterface {
   }
 
   @override
-  Future<AuthenticationResponse> register(
+  Future<AuthenticationResponse> registerUser(
       {required RegisterRequest registerRequest}) async {
     final response = await _appNetwork.postRequest(
-        path: ApiManger.loginUrl, args: registerRequest.getRequestData());
+        path: ApiManger.registerUrl, args: registerRequest.getRequestData());
     return response.fold(
         (l) => left(l.message), (r) => right(User.fromJson(r)));
   }

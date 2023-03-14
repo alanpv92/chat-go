@@ -6,23 +6,33 @@ class CustomTextFormField extends StatelessWidget {
   final IconData? iconData;
   final bool isPass;
   final void Function()? onPressed;
+  final bool isPasswordHidden;
   const CustomTextFormField(
       {super.key,
       required this.controller,
       required this.hintText,
       this.iconData,
-      this.isPass=false,
-      this.onPressed});
+      this.isPass = false,
+      this.onPressed, this.isPasswordHidden=false});
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       obscureText: isPass,
       controller: controller,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return "this field is required";
+        }
+        return null;
+      },
       style: Theme.of(context).textTheme.headlineSmall,
       decoration: InputDecoration(
           hintText: hintText,
-          suffixIcon: IconButton(onPressed: onPressed, icon: Icon(iconData),color: isPass?null:Colors.blue)),
+          suffixIcon: IconButton(
+              onPressed: onPressed,
+              icon: Icon(iconData),
+              color: isPasswordHidden ? null : Colors.blue)),
     );
   }
 }
