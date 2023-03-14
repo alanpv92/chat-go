@@ -2,13 +2,13 @@ import axios from "axios";
 import ConstantHelper from "../constants/constants";
 
 class HasuraHelper {
-  private static intance: HasuraHelper;
+  private static instance: HasuraHelper;
   private constructor() {}
   public static getInstance(): HasuraHelper {
-    if (!HasuraHelper.getInstance) {
-      this.intance = new HasuraHelper();
+    if (!HasuraHelper.instance) {
+      this.instance = new HasuraHelper();
     }
-    return this.intance;
+    return this.instance;
   }
 
   async query(queryString: String) {
@@ -24,6 +24,7 @@ class HasuraHelper {
       return response.data['data'];
     } catch (e: any) {
       const errorText = e.message || "something went wrong";
+      
       throw new Error(errorText);
     }
   }

@@ -1,7 +1,6 @@
 class HasuraQuery {
   static findUserByEmailQuery(email: String) {
     return `
-        
         query MyQuery {
             users(where: {email: {_eq: "${email}"}}) {
               id
@@ -16,3 +15,5 @@ class HasuraQuery {
         `;
   }
 }
+
+export default HasuraQuery;

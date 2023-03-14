@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import crypto, { BinaryLike } from "crypto";
 import jwt from "jsonwebtoken";
 import HasuraHelper from "../../helpers/hasura/hasura";
+import HasuraQuery from "../../hasura_queries/query";
+import HasuraMutation from "../../hasura_queries/mutation";
 
 const generateToken = (data: { id: String; email: String }) => {
   let token = jwt.sign(data, process.env.TOKEN_KEY ?? "", {
@@ -15,6 +17,7 @@ const getUserDetailsByEmail = async (email: String) => {
     let response = await HasuraHelper.getInstance().query(
       HasuraQuery.findUserByEmailQuery(email)
     );
+
     let user: Array<{
       id: String;
       password: String;
@@ -24,7 +27,7 @@ const getUserDetailsByEmail = async (email: String) => {
     }> = response["users"] || [];
     return user;
   } catch (e: any) {
-    throw e;
+    throw new Error("something went wrong");
   }
 };
 
@@ -49,6 +52,13 @@ const registerUser = async (req: Request, res: Response) => {
       token: generateToken(tokenData),
     });
   } catch (e: any) {
+    if (
+      (e.message as String).includes(
+        "Uniqueness violation. duplicate key value violates unique constraint "
+      )
+    ) {
+      e.message = "user name is not unique";
+    }
     res.status(401).json({
       error: e.message || "something went wrong",
     });
@@ -59,8 +69,9 @@ const loginUser = async (req: Request, res: Response) => {
   try {
     let { email, password } = req.body;
     let user = await getUserDetailsByEmail(email);
+
     if (user.length == 0) {
-      throw Error("invaild email");
+      throw Error("user does not exist");
     } else {
       let hash = crypto
         .pbkdf2Sync(password, user[0].salt as BinaryLike, 1000, 64, `sha512`)
@@ -90,6 +101,6 @@ const loginUser = async (req: Request, res: Response) => {
 };
 
 export default {
-    loginUser,
-    registerUser
-}
+  loginUser,
+  registerUser,
+};

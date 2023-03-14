@@ -14,3 +14,5 @@ class HasuraMutation{
         `;
     }
 }
+
+export default HasuraMutation;
