@@ -20,7 +20,7 @@ void main(List<String> args) async {
   //     .loginUser(email: "test1@gmail.com", password: "qwerty");
   runApp(ProviderScope(
       child: EasyLocalization(
-          supportedLocales: const [Locale('en', 'US')],
+          supportedLocales: const [Locale('en')],
           path: AssetManger.instance.transaltions,
           child: const MyApp())));
 }
@@ -34,6 +34,9 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeManger.darkTheme(),
       themeMode: ThemeController.instance.currentThemeMode,
       theme: ThemeController.instance.getAppTheme(),
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale, 
       home: const AuthenticationScreen(),
     );
   }
