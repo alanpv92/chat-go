@@ -1,6 +1,8 @@
+import 'package:chatgoclient/data/custom%20types/custom_types.dart';
+
 abstract class AppNetworkInterface {
-  Future<void> getRequest();
-  Future<void> postRequest();
-  Future<void> patchRequest();
-  Future<void> deleteRequest();
+  Future<AppNetworkResponse> getRequest();
+  Future<AppNetworkResponse> postRequest();
+  Future<AppNetworkResponse> patchRequest();
+  Future<AppNetworkResponse> deleteRequest();
 }
