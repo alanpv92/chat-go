@@ -1,3 +1,4 @@
+import 'package:chatgoclient/controllers/authentication.dart';
 import 'package:chatgoclient/manager/api.dart';
 import 'package:chatgoclient/manager/asset.dart';
 import 'package:chatgoclient/services/network/app_network.dart';
@@ -8,9 +9,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  AppNetwork.instance.postRequest(
-      path: ApiManger.loginUrl,
-      args: {"email": "test1@gmail.com", "password": "qwerty"});
+  // AppNetwork.instance.postRequest(
+  //     path: ApiManger.loginUrl,
+  //     args: {"email": "test1@gmail.com", "password": "qwerty"});
+  AuthenticationController()
+      .loginUser(email: "test1@gmail.com", password: "qwerty");
   runApp(ProviderScope(
       child: EasyLocalization(
           supportedLocales: const [Locale('en', 'US')],

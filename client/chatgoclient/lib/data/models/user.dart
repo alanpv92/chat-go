@@ -4,11 +4,11 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User {
-  @JsonKey(name: 'id')
+  @JsonKey(name:'id')
   String userId;
-  @JsonKey(name: 'email')
+  @JsonKey(name:'email')
   String email;
-  @JsonKey(name: 'user_name')
+  @JsonKey(name:'user_name')
   String userName;
 
   User({required this.email, required this.userId, required this.userName});

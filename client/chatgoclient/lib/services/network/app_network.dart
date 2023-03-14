@@ -19,7 +19,7 @@ class AppNetwork implements AppNetworkInterface {
     try {
       final response = await _dio.delete(path, data: args);
       log("response is $response");
-      return right({});
+      return right(response.data);
     } on DioError catch (e) {
       log('error is ${e.response?.data}');
       if (e.response != null &&
@@ -46,7 +46,7 @@ class AppNetwork implements AppNetworkInterface {
     try {
       final response = await _dio.get(path, data: args);
       log("response is $response");
-      return right({});
+      return right(response.data);
     } on DioError catch (e) {
       log('error is ${e.response?.data}');
       if (e.response != null &&
@@ -73,7 +73,7 @@ class AppNetwork implements AppNetworkInterface {
     try {
       final response = await _dio.patch(path, data: args);
       log("response is $response");
-      return right({});
+      return right(response.data);
     } on DioError catch (e) {
       log('error is ${e.response?.data}');
       if (e.response != null &&
@@ -99,8 +99,7 @@ class AppNetwork implements AppNetworkInterface {
       {required String path, required Map<String, dynamic> args}) async {
     try {
       final response = await _dio.post(path, data: args);
-      log("response is $response");
-      return right({});
+      return right(response.data);
     } on DioError catch (e) {
       log('error is ${e.response?.data}');
       if (e.response != null &&
