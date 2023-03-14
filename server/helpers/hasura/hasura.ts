@@ -21,6 +21,7 @@ class HasuraHelper {
           response.data["errors"][0]["message"] || "something went wrong"
         );
       }
+      return response.data['data'];
     } catch (e: any) {
       const errorText = e.message || "something went wrong";
       throw new Error(errorText);
