@@ -11,20 +11,37 @@ class HasuraHelper {
     return this.instance;
   }
 
-  async query(queryString: String) {
+  async query(queryString: String, headersData: any) {
     try {
-      let response = await axios.post(ConstantHelper.hasuraBaseUrl, {
+      const graphqlQuery = {
         query: queryString,
+        variables: {},
+      };
+
+      let hasuraHeadersData = {
+        "content-type": "application/json",
+        "x-hasura-admin-secret": headersData["x-hasura-admin-secret"] || "",
+        "X-Hasura-Role": headersData["x-hasura-role"] || "",
+        "X-Hasura-Is-Owner": headersData["x-hasura-is-owner"] || "",
+      };
+
+      let response = await axios({
+        url: ConstantHelper.hasuraBaseUrl,
+        method: "post",
+        headers: hasuraHeadersData,
+        data: graphqlQuery,
       });
+
       if (response.data["errors"]) {
         throw new Error(
           response.data["errors"][0]["message"] || "something went wrong"
         );
       }
-      return response.data['data'];
+
+      return response.data["data"];
     } catch (e: any) {
       const errorText = e.message || "something went wrong";
-      
+
       throw new Error(errorText);
     }
   }
