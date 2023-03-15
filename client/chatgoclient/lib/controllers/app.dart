@@ -22,4 +22,6 @@ class AppController extends BaseController {
       SystemNavigator.pop();
     }
   }
+
+  
 }
