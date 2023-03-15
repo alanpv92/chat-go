@@ -1,9 +1,10 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import crypto, { BinaryLike } from "crypto";
 import jwt from "jsonwebtoken";
 import HasuraHelper from "../../helpers/hasura/hasura";
 import HasuraQuery from "../../hasura_queries/query";
 import HasuraMutation from "../../hasura_queries/mutation";
+require("dotenv").config();
 
 const generateToken = (data: { id: String; email: String }) => {
   let token = jwt.sign(data, process.env.TOKEN_KEY ?? "", {
@@ -12,10 +13,11 @@ const generateToken = (data: { id: String; email: String }) => {
   return token;
 };
 
-const getUserDetailsByEmail = async (email: String) => {
+const getUserDetailsByEmail = async (email: String, headers: {}) => {
   try {
     let response = await HasuraHelper.getInstance().query(
-      HasuraQuery.findUserByEmailQuery(email)
+      HasuraQuery.findUserByEmailQuery(email),
+      headers
     );
 
     let user: Array<{
@@ -27,6 +29,7 @@ const getUserDetailsByEmail = async (email: String) => {
     }> = response["users"] || [];
     return user;
   } catch (e: any) {
+    console.log("error is", e);
     throw new Error("something went wrong");
   }
 };
@@ -34,7 +37,9 @@ const getUserDetailsByEmail = async (email: String) => {
 const registerUser = async (req: Request, res: Response) => {
   try {
     let { email, password, user_name } = req.body;
-    let user = await getUserDetailsByEmail(email);
+    req.headers["x-hasura-admin-secret"] =
+      process.env.HASURA_GRAPHQL_ADMIN_SECRET;
+    let user = await getUserDetailsByEmail(email, req.headers);
     if (user.length != 0) {
       throw new Error("user alredy registred");
     }
@@ -43,7 +48,8 @@ const registerUser = async (req: Request, res: Response) => {
       .pbkdf2Sync(password, salt, 1000, 64, `sha512`)
       .toString(`hex`);
     let response = await HasuraHelper.getInstance().query(
-      HasuraMutation.addUser(email, hash, user_name, salt)
+      HasuraMutation.addUser(email, hash, user_name, salt),
+      req.headers
     );
     let id = response["insert_users_one"]["id"];
     let tokenData = { id, email };
@@ -68,7 +74,9 @@ const registerUser = async (req: Request, res: Response) => {
 const loginUser = async (req: Request, res: Response) => {
   try {
     let { email, password } = req.body;
-    let user = await getUserDetailsByEmail(email);
+    req.headers["x-hasura-admin-secret"] =
+      process.env.HASURA_GRAPHQL_ADMIN_SECRET;
+    let user = await getUserDetailsByEmail(email, req.headers);
 
     if (user.length == 0) {
       throw Error("user does not exist");
@@ -100,7 +108,27 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
+function verifyWebToken(req: Request, res: Response, next: NextFunction) {
+  try {
+    const token = req.header("authorization")?.split(" ")[1];
+    if (token != undefined) {
+      let tokenStatus = jwt.verify(token, process.env.TOKEN_KEY as jwt.Secret);
+      if (tokenStatus) {
+        return res.json({
+          "X-Hasura-Role": "admin",
+          "X-Hasura-Is-Owner": "true",
+        });
+      }
+    } else {
+      throw Error();
+    }
+  } catch (e) {
+    return res.status(400).json({ error: "token expired" });
+  }
+}
+
 export default {
   loginUser,
   registerUser,
+  verifyWebToken,
 };
