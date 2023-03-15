@@ -19,16 +19,21 @@ class UserMangementController {
   String? get token => _appToken;
 
   checkAuthStatus() async {
-    
     if (_appToken != null) {
+        _currentuser = await _userBoxStorage.getUser();
+
       Get.offAllNamed(Routes.homeScreen);
     } else {
+  
       Get.offAllNamed(Routes.authScreen);
     }
   }
 
-  populateAndNavigateOnAuthentication({required User user}) {
+  populateAndNavigateOnAuthentication({required User user}) async {
     _currentuser = user;
+    await _userBoxStorage.storeId(id: user.userId);
+    await _userBoxStorage.storeUserName(userName: user.userName);
+    await _userBoxStorage.storeEmail(email: user.email);
     Get.offAllNamed(Routes.homeScreen);
   }
 
