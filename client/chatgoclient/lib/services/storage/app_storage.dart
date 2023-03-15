@@ -20,7 +20,14 @@ class AppStorage implements AppStorageInterface {
   }
 
   @override
-  Future deleteData({required String boxName, required String key}) async {}
+  Future deleteData({required String boxName, required String key}) async {
+    if (!Hive.isBoxOpen(boxName)) {
+      await Hive.openBox(boxName);
+    } else {
+      final value = await Hive.box(boxName).delete(key);
+      return value;
+    }
+  }
 
   @override
   Future readData({required String boxName, required String key}) async {

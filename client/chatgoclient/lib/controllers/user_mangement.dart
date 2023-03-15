@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/data/models/user.dart';
 import 'package:chatgoclient/utils/stroage/user_box.dart';
 import 'package:get/route_manager.dart';
@@ -17,6 +19,7 @@ class UserMangementController {
   String? get token => _appToken;
 
   checkAuthStatus() async {
+    
     if (_appToken != null) {
       Get.offAllNamed(Routes.homeScreen);
     } else {
@@ -37,5 +40,9 @@ class UserMangementController {
   storeToken({required String token}) async {
     _appToken = token;
     await _userBoxStorage.storeToken(token: token);
+  }
+
+  userMangementControllerDisposer() {
+    _appToken = null;
   }
 }

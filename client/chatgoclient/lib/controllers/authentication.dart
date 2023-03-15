@@ -1,3 +1,4 @@
+import 'package:chatgoclient/controllers/app.dart';
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/custom%20types/custom_types.dart';
@@ -8,7 +9,7 @@ import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/text.dart';
 import 'package:chatgoclient/services/authentication/authentication.dart';
 import 'package:chatgoclient/utils/custom_snack_bar.dart';
-import 'package:chatgoclient/utils/stroage/user_box.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
@@ -106,7 +107,7 @@ class AuthenticationController extends BaseController {
   }
 
   logoutUser() async {
-    await UserBoxStorage.instance.deleteToken();
-    Get.offAllNamed(Routes.authScreen);
+    AppController.instance.disposeAppOnLogOut();
+     Get.offAllNamed(Routes.authScreen);
   }
 }

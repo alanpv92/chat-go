@@ -3,6 +3,7 @@ import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/manager/text.dart';
 import 'package:chatgoclient/services/storage/app_storage.dart';
 import 'package:chatgoclient/utils/custom_snack_bar.dart';
+import 'package:chatgoclient/utils/stroage/user_box.dart';
 import 'package:flutter/services.dart';
 
 class AppController extends BaseController {
@@ -23,5 +24,8 @@ class AppController extends BaseController {
     }
   }
 
-  
+  disposeAppOnLogOut() async {
+    await UserBoxStorage.instance.deleteToken();
+   await UserMangementController.instance.userMangementControllerDisposer();
+  }
 }
