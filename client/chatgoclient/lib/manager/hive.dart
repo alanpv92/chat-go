@@ -1,5 +1,6 @@
 class HiveBox {
   String userBox = 'userbox';
+  String tokenKey = 'tokenKey';
 }
 
 class HiveManger with HiveBox {

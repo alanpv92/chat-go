@@ -34,7 +34,7 @@ class AppStorage implements AppStorageInterface {
 
   @override
   Future writeData(
-      {required String boxName, required String key, dynamic value}) async {
+      {required String boxName, required String key,required dynamic value}) async {
     if (!Hive.isBoxOpen(boxName)) {
       await Hive.openBox(boxName);
     } else {
