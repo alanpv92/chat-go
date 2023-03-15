@@ -5,6 +5,7 @@ import 'package:chatgoclient/data/exceptions/app_newtork.dart';
 import 'package:chatgoclient/data/interfaces/app_network.dart';
 import 'package:chatgoclient/manager/api.dart';
 import 'package:chatgoclient/manager/text.dart';
+import 'package:chatgoclient/services/network/app_network_interceptor.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 
@@ -12,13 +13,14 @@ class AppNetwork implements AppNetworkInterface {
   AppNetwork._();
   static AppNetwork instance = AppNetwork._();
   factory AppNetwork() => instance;
-  final Dio _dio = Dio(BaseOptions(baseUrl: ApiManger.apiBaseUrl));
+  final Dio _dio = Dio(BaseOptions(baseUrl: ApiManger.apiBaseUrl))
+    ..interceptors.add(AppNetworkInterceptor());
   @override
   Future<AppNetworkResponse> deleteRequest(
       {required String path, required Map<String, dynamic> args}) async {
     try {
       final response = await _dio.delete(path, data: args);
-      log("response is $response");
+
       return right(response.data);
     } on DioError catch (e) {
       log('error is ${e.response?.data}');

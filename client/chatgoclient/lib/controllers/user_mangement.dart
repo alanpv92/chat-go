@@ -8,6 +8,7 @@ class UserMangementController {
   static UserMangementController instance = UserMangementController._();
   factory UserMangementController() => instance;
   late User currentuser;
+  
 
   populateAndNavigateOnAuthentication({required User user}) {
     currentuser = user;

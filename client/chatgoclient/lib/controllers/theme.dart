@@ -14,7 +14,7 @@ class ThemeController extends BaseController {
 
   ThemeMode currentThemeMode = ThemeMode.light;
   ThemeData getAppTheme() {
-    log('i am being called');
+ 
     if (currentThemeMode == ThemeMode.dark) {
       return ThemeManger.darkTheme();
     }
