@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/data/models/user.dart';
 import 'package:chatgoclient/utils/stroage/user_box.dart';
 import 'package:get/route_manager.dart';
@@ -18,14 +20,20 @@ class UserMangementController {
 
   checkAuthStatus() async {
     if (_appToken != null) {
+        _currentuser = await _userBoxStorage.getUser();
+
       Get.offAllNamed(Routes.homeScreen);
     } else {
+  
       Get.offAllNamed(Routes.authScreen);
     }
   }
 
-  populateAndNavigateOnAuthentication({required User user}) {
+  populateAndNavigateOnAuthentication({required User user}) async {
     _currentuser = user;
+    await _userBoxStorage.storeId(id: user.userId);
+    await _userBoxStorage.storeUserName(userName: user.userName);
+    await _userBoxStorage.storeEmail(email: user.email);
     Get.offAllNamed(Routes.homeScreen);
   }
 
@@ -37,5 +45,9 @@ class UserMangementController {
   storeToken({required String token}) async {
     _appToken = token;
     await _userBoxStorage.storeToken(token: token);
+  }
+
+  userMangementControllerDisposer() {
+    _appToken = null;
   }
 }

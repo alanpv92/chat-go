@@ -4,6 +4,7 @@ import 'package:chatgoclient/controllers/theme.dart';
 import 'package:chatgoclient/manager/asset.dart';
 import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/theme.dart';
+import 'package:chatgoclient/services/network/app_hasrua_connect.dart';
 import 'package:chatgoclient/ui/screens/authentication.dart';
 import 'package:chatgoclient/ui/screens/splash.dart';
 import 'package:chatgoclient/ui/widgets/providers/theme.dart';
@@ -15,6 +16,7 @@ import 'package:get/get.dart';
 void main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+
   // AppNetwork.instance.postRequest(
   //     path: ApiManger.loginUrl,
   //     args: {"email": "test1@gmail.com", "password": "qwerty"});
@@ -33,14 +35,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      darkTheme: ThemeManger.darkTheme(),
-      themeMode: ThemeController.instance.currentThemeMode,
-      theme: ThemeController.instance.getAppTheme(),
-      localizationsDelegates: context.localizationDelegates,
-      supportedLocales: context.supportedLocales,
-      locale: context.locale, 
-      getPages: RouteManger.getPages(),
-      home:const SplashScreen()
-    );
+        darkTheme: ThemeManger.darkTheme(),
+        themeMode: ThemeController.instance.currentThemeMode,
+        theme: ThemeController.instance.getAppTheme(),
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
+        getPages: RouteManger.getPages(),
+        home: const SplashScreen());
   }
 }
