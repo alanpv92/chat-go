@@ -16,6 +16,14 @@ class UserMangementController {
   User get user => _currentuser;
   String? get token => _appToken;
 
+  checkAuthStatus() async {
+    if (_appToken != null) {
+      Get.offAllNamed(Routes.homeScreen);
+    } else {
+      Get.offAllNamed(Routes.authScreen);
+    }
+  }
+
   populateAndNavigateOnAuthentication({required User user}) {
     _currentuser = user;
     Get.offAllNamed(Routes.homeScreen);

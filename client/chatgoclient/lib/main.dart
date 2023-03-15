@@ -5,6 +5,7 @@ import 'package:chatgoclient/manager/asset.dart';
 import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/theme.dart';
 import 'package:chatgoclient/ui/screens/authentication.dart';
+import 'package:chatgoclient/ui/screens/splash.dart';
 import 'package:chatgoclient/ui/widgets/providers/theme.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       locale: context.locale, 
       getPages: RouteManger.getPages(),
-      home: const AuthenticationScreen(),
+      home:const SplashScreen()
     );
   }
 }

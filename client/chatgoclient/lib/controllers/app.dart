@@ -14,6 +14,7 @@ class AppController extends BaseController {
     try {
       await AppStorage.instance.initAppStorage();
       await UserMangementController.instance.initToken();
+      await UserMangementController.instance.checkAuthStatus();
     } catch (e) {
       CustomSnackBar.instance
           .showError(errorText: TextManger.instance.randomError);

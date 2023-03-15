@@ -31,6 +31,8 @@ class AuthenticationController extends BaseController {
   String _authButtonText = TextManger.instance.authLoginButtonText;
 
   String _authModeToggleButtonText = TextManger.instance.registerRedirect;
+  
+ 
 
   initTextControllers() {
     emailController = TextEditingController();
