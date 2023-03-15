@@ -1,3 +1,4 @@
+import 'package:chatgoclient/controllers/authentication.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -5,9 +6,14 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: Text("welcome"),
+        child: TextButton(
+          onPressed: () {
+            AuthenticationController.instance.logoutUser();
+          },
+          child: const Text('data'),
+        ),
       ),
     );
   }

@@ -19,11 +19,7 @@ class AuthenticationService implements AuthenticationInterface {
         (l) => left(l.message), (r) => right(User.fromJson(r)));
   }
 
-  @override
-  Future<void> logout() {
-    // TODO: implement logout
-    throw UnimplementedError();
-  }
+  
 
   @override
   Future<AuthenticationResponse> registerUser(

@@ -7,5 +7,5 @@ import 'package:chatgoclient/data/models/request/register.dart';
 abstract class AuthenticationInterface {
   Future<AuthenticationResponse> loginUser({required LoginRequest loginRequest});
   Future<AuthenticationResponse> registerUser({required RegisterRequest registerRequest});
-  Future<void> logout();
+  
 }
