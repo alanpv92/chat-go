@@ -20,6 +20,7 @@ class CommonText {
   String searchUserScreenTitle = tr('search_user_screen_title');
   String searchUserNameText = tr('enter_user_name');
   String emptyBoxText = tr('empty_text');
+  String retry = "retry";
 }
 
 class TextManger with ErrorText, AuthText, CommonText {

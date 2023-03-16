@@ -39,6 +39,7 @@ class SearchController extends BaseController {
 
   _fetchPage({required int offset}) async {
     try {
+     
       final response =
           await _usersHasuraService.getAllUsers(offset: offset, limit: 10);
       response.fold((l) {
@@ -46,6 +47,7 @@ class SearchController extends BaseController {
       }, (r) {
         final List userData = r['users'];
         final List<User> users = userData.map((e) => User.fromJson(e)).toList();
+
         bool isLastPage = users.length < numberOfitemsPerFetch;
         if (isLastPage) {
           _pagingController.appendLastPage(users);
@@ -67,7 +69,7 @@ class SearchController extends BaseController {
 
     final response = await _usersHasuraService.getUsersBySearchQuery(
         searchQuery: searchQuery);
-    
+
     response.fold((l) {
       _searchResult.clear();
       CustomSnackBar.instance
