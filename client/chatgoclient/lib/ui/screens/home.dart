@@ -38,10 +38,10 @@ class HomeScreen extends StatelessWidget {
                   return ListTile(
                       leading: CircleAvatar(
                         child: Text(
-                            chatController.dummyChatPreview[index].fromName[0]),
+                            chatController.dummyChatPreview[index].receiverName[0]),
                       ),
                       title: Text(
-                        chatController.dummyChatPreview[index].fromName,
+                        chatController.dummyChatPreview[index].receiverName,
                         style: Theme.of(context)
                             .textTheme
                             .headlineSmall!

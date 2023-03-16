@@ -10,12 +10,12 @@ class ChatController extends BaseController {
   factory ChatController() => instance;
 
   final dummyChatPreview = [
-    ChatPreview(fromName: 'alan1', fromid: '1', lastMessage: 'hello'),
+    ChatPreview(receiverName: 'alan1', receiverid: '1', lastMessage: 'hello'),
     ChatPreview(
-        fromName: 'paul1',
-        fromid: '2',
+        receiverName: 'paul1',
+        receiverid: '2',
         lastMessage: 'are comming',
         isLastMessageRead: true),
-    ChatPreview(fromName: 'varghese1', fromid: '2', lastMessage: 'hello'),
+    ChatPreview(receiverName: 'varghese1', receiverid: '2', lastMessage: 'hello'),
   ];
 }
