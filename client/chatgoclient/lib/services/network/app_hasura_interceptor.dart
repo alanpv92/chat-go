@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:chatgoclient/controllers/authentication.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 

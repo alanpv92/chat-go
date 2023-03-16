@@ -2,5 +2,6 @@
     "random_error":"something went wrong",
     "auth_register_redirect":"Create An Account?",
     "auth_login_redirect":"Already Have An Account?",
-    "send_chat_hint":"type something"
+    "send_chat_hint":"type something",
+    "search_user_screen_title":"Search Users"
 }

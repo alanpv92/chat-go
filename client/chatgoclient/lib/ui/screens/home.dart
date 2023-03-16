@@ -19,7 +19,11 @@ class HomeScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.search_sharp)),
+            IconButton(
+                onPressed: () {
+                  Get.toNamed(Routes.searchUsersScreen);
+                },
+                icon: const Icon(Icons.search_sharp)),
             const SizedBox(
               width: 15,
             ),
@@ -41,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                   return ListTile(
                       onTap: () {
                         Get.to(
-                          ()=>ChatScreen(
+                          () => ChatScreen(
                             chatPreview: chatController.dummyChatPreview[index],
                           ),
                         );

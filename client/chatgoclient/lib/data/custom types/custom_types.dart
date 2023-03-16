@@ -6,4 +6,6 @@ typedef AppNetworkResponse<T>
     = Either<AppNetworkException, Map<String, dynamic>>;
 
 typedef AuthErrorMessage = String;
-typedef AuthenticationResponse = Either<AuthErrorMessage,User >;
+typedef AuthenticationResponse = Either<AuthErrorMessage, User>;
+
+typedef HasuraResponse = Either<AppNetworkException, Map<String, dynamic>>;

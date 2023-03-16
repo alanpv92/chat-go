@@ -17,6 +17,7 @@ class AuthText {
 class CommonText {
   String appTitle = "Chat Go";
   String sendChatHint = tr('send_chat_hint');
+  String searchUserScreenTitle = tr('search_user_screen_title');
 }
 
 class TextManger with ErrorText, AuthText, CommonText {
