@@ -16,10 +16,10 @@ class AuthText {
 
 class CommonText {
   String appTitle = "Chat Go";
-
+  String sendChatHint = tr('send_chat_hint');
 }
 
-class TextManger with ErrorText, AuthText,CommonText {
+class TextManger with ErrorText, AuthText, CommonText {
   TextManger._();
   static TextManger instance = TextManger._();
   factory TextManger() => instance;

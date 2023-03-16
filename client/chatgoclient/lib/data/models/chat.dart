@@ -5,7 +5,7 @@ class Chat {
   final String receiverId;
   final String senderId;
   final String message;
-  final String isReceiverRead;
+  final bool isReceiverRead;
   Chat(
       {required this.chatId,
       required this.isReceiverRead,
