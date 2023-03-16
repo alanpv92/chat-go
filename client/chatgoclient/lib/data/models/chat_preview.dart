@@ -1,13 +1,13 @@
 // add json serialisable;
 
 class ChatPreview {
-  final String fromid;
-  final String fromName;
+  final String receiverid;
+  final String receiverName;
   final String lastMessage;
   bool isLastMessageRead;
   ChatPreview(
-      {required this.fromName,
-      required this.fromid,
+      {required this.receiverName,
+      required this.receiverid,
       this.isLastMessageRead = false,
       required this.lastMessage});
 }

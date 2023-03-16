@@ -1,8 +1,11 @@
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/chat.dart';
+import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/text.dart';
+import 'package:chatgoclient/ui/screens/chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/route_manager.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -36,12 +39,19 @@ class HomeScreen extends StatelessWidget {
               return ListView.separated(
                 itemBuilder: (context, index) {
                   return ListTile(
+                      onTap: () {
+                        Get.to(
+                          ()=>ChatScreen(
+                            chatPreview: chatController.dummyChatPreview[index],
+                          ),
+                        );
+                      },
                       leading: CircleAvatar(
-                        child: Text(
-                            chatController.dummyChatPreview[index].fromName[0]),
+                        child: Text(chatController
+                            .dummyChatPreview[index].receiverName[0]),
                       ),
                       title: Text(
-                        chatController.dummyChatPreview[index].fromName,
+                        chatController.dummyChatPreview[index].receiverName,
                         style: Theme.of(context)
                             .textTheme
                             .headlineSmall!
