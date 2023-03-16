@@ -5,7 +5,6 @@ const router =express.Router();
 
 
 router.use('/',(req:Request,res:Response,next:NextFunction)=>{
-    console.log("i am being called weebhook-------");
   authController.verifyWebToken(req,res,next);
 });
 
