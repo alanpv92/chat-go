@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:chatgoclient/controllers/authentication.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 
@@ -23,6 +22,7 @@ class AppHasuraInterceptor extends Interceptor {
   @override
   Future? onRequest(Request request, HasuraConnect connect) async {
     final token = UserMangementController.instance.token;
+    
     if (token != null) {
       request.headers["authorization"] = "Bearer $token";
       return request;

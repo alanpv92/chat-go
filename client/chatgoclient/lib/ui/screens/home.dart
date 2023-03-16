@@ -16,10 +16,17 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             TextManger.instance.appTitle,
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium!
+                .copyWith(color: Colors.white),
           ),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.search_sharp)),
+            IconButton(
+                onPressed: () {
+                  Get.toNamed(Routes.usersScreen);
+                },
+                icon: const Icon(Icons.search_sharp)),
             const SizedBox(
               width: 15,
             ),
@@ -41,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                   return ListTile(
                       onTap: () {
                         Get.to(
-                          ()=>ChatScreen(
+                          () => ChatScreen(
                             chatPreview: chatController.dummyChatPreview[index],
                           ),
                         );
