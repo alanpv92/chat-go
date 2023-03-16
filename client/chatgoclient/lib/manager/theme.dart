@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 
 class ThemeManger {
   static ThemeData lightTheme() => ThemeData.light().copyWith(
-      primaryColor: Colors.lightBlue,
+      scaffoldBackgroundColor: Colors.white,
       
       textTheme: const TextTheme(
-          headlineSmall: TextStyle(
-            color: Colors.black,
-            fontSize: 18
+        titleMedium:TextStyle(
+          color: Colors.grey
+        ) ,
+          headlineSmall: TextStyle(color: Colors.black, fontSize: 18),
+          headlineMedium: TextStyle(
+            color: Colors.white,
+            fontSize: 25,
+            fontWeight: FontWeight.w500
           ),
           headlineLarge: TextStyle(
-        color: Colors.blue,
-        fontWeight: FontWeight.w800,
-      )));
+            color: Colors.blue,
+            fontWeight: FontWeight.w800,
+          )));
   static ThemeData darkTheme() => ThemeData.dark().copyWith();
 }

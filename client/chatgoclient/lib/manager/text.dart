@@ -14,7 +14,12 @@ class AuthText {
   String loginRedirect = tr('auth_login_redirect');
 }
 
-class TextManger with ErrorText, AuthText {
+class CommonText {
+  String appTitle = "Chat Go";
+
+}
+
+class TextManger with ErrorText, AuthText,CommonText {
   TextManger._();
   static TextManger instance = TextManger._();
   factory TextManger() => instance;
