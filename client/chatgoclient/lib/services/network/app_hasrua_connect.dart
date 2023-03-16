@@ -14,7 +14,7 @@ class AppHasuraConnect {
 
   final HasuraConnect _hasuraConnect = HasuraConnect(ApiManger.graphqlUrl,
       interceptors: [AppHasuraInterceptor()]);
-
+  
   Future<Either<AppNetworkException, Map<String, dynamic>>> query(
       {required String query}) async {
     try {

@@ -3,5 +3,7 @@
     "auth_register_redirect":"Create An Account?",
     "auth_login_redirect":"Already Have An Account?",
     "send_chat_hint":"type something",
-    "search_user_screen_title":"Search Users"
+    "search_user_screen_title":"Search Users",
+    "enter_user_name":"Enter User Name",
+    "empty_text":"oops no data found"
 }

@@ -2,17 +2,19 @@ import 'package:chatgoclient/controllers/search.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/models/user.dart';
 import 'package:chatgoclient/manager/text.dart';
+import 'package:chatgoclient/ui/widgets/search/search_bar.dart';
+import 'package:chatgoclient/ui/widgets/search/user_card.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class SearchUsersScreen extends StatefulWidget {
-  const SearchUsersScreen({super.key});
+class UsersScreen extends StatefulWidget {
+  const UsersScreen({super.key});
 
   @override
-  State<SearchUsersScreen> createState() => _SearchUsersScreenState();
+  State<UsersScreen> createState() => _UsersScreenState();
 }
 
-class _SearchUsersScreenState extends State<SearchUsersScreen> {
+class _UsersScreenState extends State<UsersScreen> {
   @override
   void initState() {
     SearchController.instance.initPageController();
@@ -35,6 +37,7 @@ class _SearchUsersScreenState extends State<SearchUsersScreen> {
       body: SafeArea(
           child: Column(
         children: [
+          const SearchBar(isRedirect: true),
           Expanded(
               child: PagedListView.separated(
             pagingController: SearchController.instance.pageController,
@@ -44,21 +47,8 @@ class _SearchUsersScreenState extends State<SearchUsersScreen> {
                     UserMangementController.instance.user.userId) {
                   return const SizedBox();
                 }
-                return ListTile(
-                  leading: CircleAvatar(
-                    child: Text(item.userName[0]),
-                  ),
-                  title: Text(
-                    item.userName,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
-                  subtitle: Padding(
-                    padding: const EdgeInsets.only(top: 5),
-                    child: Text(
-                      item.email,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
+                return UserCard(
+                  user: item,
                 );
               },
             ),

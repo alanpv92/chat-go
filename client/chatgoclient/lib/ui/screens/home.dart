@@ -16,12 +16,15 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             TextManger.instance.appTitle,
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium!
+                .copyWith(color: Colors.white),
           ),
           actions: [
             IconButton(
                 onPressed: () {
-                  Get.toNamed(Routes.searchUsersScreen);
+                  Get.toNamed(Routes.usersScreen);
                 },
                 icon: const Icon(Icons.search_sharp)),
             const SizedBox(

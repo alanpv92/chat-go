@@ -22,6 +22,7 @@ class AppHasuraInterceptor extends Interceptor {
   @override
   Future? onRequest(Request request, HasuraConnect connect) async {
     final token = UserMangementController.instance.token;
+    
     if (token != null) {
       request.headers["authorization"] = "Bearer $token";
       return request;
