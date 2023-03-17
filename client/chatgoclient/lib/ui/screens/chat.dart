@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/chat.dart';
-import 'package:chatgoclient/controllers/user_mangement.dart';
+
 import 'package:chatgoclient/data/models/chat_preview.dart';
 import 'package:chatgoclient/ui/widgets/chat/chat_bottom.dart';
 import 'package:chatgoclient/ui/widgets/chat/chat_card.dart';
@@ -16,6 +18,12 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  @override
+  void dispose() {
+    ChatController.instance.closeChatSnapShot();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,20 +53,46 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {
-                      FocusScopeNode currentFocus = FocusScope.of(context);
-                      if (!currentFocus.hasPrimaryFocus) {
-                        currentFocus.unfocus();
-                      }
-                    },
-                    child: ListView.builder(
-                      itemBuilder: (context, index) {
-                        return ChatCard(
-                            chat: chatController.getDummyChat()[index]);
+                      onTap: () {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (!currentFocus.hasPrimaryFocus) {
+                          currentFocus.unfocus();
+                        }
                       },
-                      itemCount: chatController.getDummyChat().length,
-                    ),
-                  ),
+                      child: FutureBuilder(
+                          future: chatController.setUpSenderReciverConnection(
+                              reciverId: widget.chatPreview.receiverid),
+                          builder: (context, data) {
+                            if (data.connectionState == ConnectionState.done) {
+                              return StreamBuilder(
+                                stream: data.data,
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.active &&
+                                      snapshot.hasData) {
+                                    chatController
+                                        .populateCurrentChat(snapshot.data);
+                                    return ListView.builder(
+                                      itemBuilder: (context, index) {
+                                        return ChatCard(
+                                            chat: chatController
+                                                .currentOpenChat[index]);
+                                      },
+                                      itemCount:
+                                          chatController.currentOpenChat.length,
+                                    );
+                                  }
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              );
+                            }
+
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          })),
                 ),
                 const ChatBottom(),
               ],

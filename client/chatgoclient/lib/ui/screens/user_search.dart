@@ -26,7 +26,7 @@ class UserSearchScreen extends StatelessWidget {
                         color: Colors.blue,
                       ),
                     )
-                  :searchController.searchResult.isEmpty? EmptyBox() :ListView.separated(
+                  :searchController.searchResult.isEmpty?const EmptyBox() :ListView.separated(
                       itemBuilder: (context, index) {
                         return UserCard(
                             user: searchController.searchResult[index]);
