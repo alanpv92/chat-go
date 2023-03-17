@@ -1,9 +1,14 @@
-
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/models/chat.dart';
 import 'package:chatgoclient/data/models/chat_preview.dart';
+import 'package:chatgoclient/manager/text.dart';
+import 'package:chatgoclient/services/network/hasura/chat.dart';
+import 'package:chatgoclient/services/network/hasura/users.dart';
+import 'package:chatgoclient/utils/custom_snack_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/route_manager.dart';
+import 'package:hasura_connect/hasura_connect.dart';
 
 final chatProvider = ChangeNotifierProvider((ref) => ChatController());
 
@@ -11,6 +16,8 @@ class ChatController extends BaseController {
   ChatController._();
   static ChatController instance = ChatController._();
   factory ChatController() => instance;
+
+  final ChatHasuraService _chatHasuraService = ChatHasuraService();
 
   final dummyChatPreview = [
     ChatPreview(receiverName: 'alan1', receiverid: '1', lastMessage: 'hello'),
@@ -42,8 +49,24 @@ class ChatController extends BaseController {
       receiverId: UserMangementController.instance.user.userId,
       senderId: '2777c110-aff9-4efe-a5b1-6675676c2ba6');
 
- List<Chat> getDummyChat() {
+  List<Chat> getDummyChat() {
     List<Chat> chats = [dummyChat, dummyChat2, dummyChat3];
     return chats;
+  }
+
+  Future<Snapshot> setUpSenderReciverConnection(
+      {required String reciverId}) async {
+    late Snapshot snapshot;
+    final response = await _chatHasuraService.getUserReceiverSnapShot(
+        senderId: UserMangementController.instance.user.userId,
+        receiverId: reciverId);
+    response.fold((l) {
+      CustomSnackBar.instance
+          .showError(errorText: TextManger.instance.randomError);
+      Get.back();
+    }, (r) {
+      snapshot = r;
+    });
+    return snapshot;
   }
 }
