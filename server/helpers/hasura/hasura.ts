@@ -24,7 +24,7 @@ class HasuraHelper {
         "X-Hasura-Role": headersData["x-hasura-role"] || "",
         "X-Hasura-Is-Owner": headersData["x-hasura-is-owner"] || "",
       };
-
+      console.log(headersData); 
       let response = await axios({
         url: ConstantHelper.hasuraBaseUrl,
         method: "post",

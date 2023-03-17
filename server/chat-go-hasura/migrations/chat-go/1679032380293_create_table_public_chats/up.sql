@@ -1,0 +1,2 @@
+CREATE TABLE "public"."chats" ("id" uuid NOT NULL DEFAULT gen_random_uuid(), "message" text NOT NULL, "sender_id" uuid NOT NULL, "receiver_id" uuid NOT NULL, "created_at" timestamptz NOT NULL DEFAULT now(), "is_receiver_read" boolean NOT NULL DEFAULT false, PRIMARY KEY ("id") , FOREIGN KEY ("sender_id") REFERENCES "public"."users"("id") ON UPDATE restrict ON DELETE restrict, FOREIGN KEY ("receiver_id") REFERENCES "public"."users"("id") ON UPDATE restrict ON DELETE restrict);
+CREATE EXTENSION IF NOT EXISTS pgcrypto;

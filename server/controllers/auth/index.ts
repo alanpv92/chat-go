@@ -111,6 +111,7 @@ const loginUser = async (req: Request, res: Response) => {
 function verifyWebToken(req: Request, res: Response, next: NextFunction) {
   try {
     const token = req.header("authorization")?.split(" ")[1];
+   
     if (token != undefined) {
       let tokenStatus = jwt.verify(token, process.env.TOKEN_KEY as jwt.Secret);
       if (tokenStatus) {

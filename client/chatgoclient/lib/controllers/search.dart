@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/manager/text.dart';
