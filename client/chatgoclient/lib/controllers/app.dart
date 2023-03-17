@@ -1,4 +1,4 @@
-
+import 'package:chatgoclient/controllers/authentication.dart';
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/manager/text.dart';
@@ -17,7 +17,7 @@ class AppController extends BaseController {
     try {
       await AppStorage.instance.initAppStorage();
       await UserMangementController.instance.initToken();
-      
+      // await AuthenticationController.instance.logoutUser();
       await UserMangementController.instance.checkAuthStatus();
       AppHasuraConnect.instance.query(query: '');
     } catch (e) {

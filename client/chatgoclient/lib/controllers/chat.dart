@@ -4,10 +4,13 @@ import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/models/chat.dart';
 import 'package:chatgoclient/data/models/chat_preview.dart';
+import 'package:chatgoclient/data/models/request/chat.dart';
 import 'package:chatgoclient/manager/text.dart';
+import 'package:chatgoclient/services/chat/chat.dart';
 import 'package:chatgoclient/services/network/hasura/chat.dart';
-import 'package:chatgoclient/services/network/hasura/users.dart';
+
 import 'package:chatgoclient/utils/custom_snack_bar.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/route_manager.dart';
 import 'package:hasura_connect/hasura_connect.dart';
@@ -20,6 +23,7 @@ class ChatController extends BaseController {
   factory ChatController() => instance;
 
   final ChatHasuraService _chatHasuraService = ChatHasuraService();
+  final ChatService _chatService = ChatService();
 
   late Snapshot chatSnapShot;
 
@@ -35,30 +39,6 @@ class ChatController extends BaseController {
   ];
 
   final List<Chat> currentOpenChat = [];
-
-  // final Chat dummyChat = Chat(
-  //     chatId: '1',
-  //     isReceiverRead: false,
-  //     message: 'hope u are fine',
-  //     receiverId: UserMangementController.instance.user.userId,
-  //     senderId: '2777c110-aff9-4efe-a5b1-6675676c2ba6');
-  // final Chat dummyChat2 = Chat(
-  //     chatId: '2',
-  //     isReceiverRead: true,
-  //     message: 'i am fine what about u?',
-  //     receiverId: '2777c110-aff9-4efe-a5b1-6675676c2ba6',
-  //     senderId: UserMangementController.instance.user.userId);
-  // final Chat dummyChat3 = Chat(
-  //     chatId: '3',
-  //     isReceiverRead: false,
-  //     message: 'i am also fine',
-  //     receiverId: UserMangementController.instance.user.userId,
-  //     senderId: '2777c110-aff9-4efe-a5b1-6675676c2ba6');
-
-  // List<Chat> getDummyChat() {
-  //   List<Chat> chats = [dummyChat, dummyChat2, dummyChat3];
-  //   return chats;
-  // }
 
   Future<Snapshot> setUpSenderReciverConnection(
       {required String reciverId}) async {
@@ -87,8 +67,40 @@ class ChatController extends BaseController {
     currentOpenChat.clear();
   }
 
-  closeChatSnapShot() {
+  sendChat({required String message, required String receiverId}) async {
+    log('message is $message');
+    final dummyChat = Chat(
+        chatId: UniqueKey().toString(),
+        isReceiverRead: false,
+        message: message,
+        receiverId: receiverId,
+        senderId: UserMangementController.instance.user.userId);
+    currentOpenChat.add(dummyChat);
+    notifyListeners();
+    final response = await _chatService.sendChat(
+        chatData: ChatRequest(
+                message: message,
+                receiverId: receiverId,
+                senderId: UserMangementController.instance.user.userId)
+            .getRequestData());
+    response.fold((l) {
+     
+      CustomSnackBar.instance.showError(errorText: "could not send message");
+      currentOpenChat.remove(dummyChat);
+      notifyListeners();
+    }, (r) {
+      final Chat chat = Chat(
+          chatId: r,
+          isReceiverRead: dummyChat.isReceiverRead,
+          message: dummyChat.message,
+          receiverId: dummyChat.receiverId,
+          senderId: dummyChat.senderId);
+      currentOpenChat.remove(dummyChat);
+      currentOpenChat.add(chat);
+    });
+  }
 
+  closeChatSnapShot() {
     clearCurrentChats();
     chatSnapShot.close();
   }

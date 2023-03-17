@@ -17,4 +17,13 @@ class AppNetworkInterceptor extends Interceptor {
     }
     super.onResponse(response, handler);
   }
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    final token = UserMangementController.instance.token;
+    if(token!=null){
+    options.headers["authorization"] = "Bearer $token";
+    }
+    super.onRequest(options, handler);
+  }
 }

@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/config/size_config.dart';
+import 'package:chatgoclient/controllers/chat.dart';
 import 'package:chatgoclient/manager/text.dart';
 import 'package:flutter/material.dart';
 
 class ChatBottom extends StatefulWidget {
-  const ChatBottom({super.key});
+  final String receiverId;
+  const ChatBottom({super.key, required this.receiverId});
 
   @override
   State<ChatBottom> createState() => _ChatBottomState();
@@ -38,13 +42,23 @@ class _ChatBottomState extends State<ChatBottom> {
             borderSide: BorderSide.none),
         child: TextFormField(
           autocorrect: false,
-          
           controller: chatTextEditingController,
           style: Theme.of(context).textTheme.headlineSmall,
           decoration: InputDecoration(
               hintText: TextManger.instance.sendChatHint,
-              suffixIcon:
-                  IconButton(onPressed: () {}, icon: const Icon(Icons.send)),
+              suffixIcon: IconButton(
+                  onPressed: () {
+                    if (chatTextEditingController.text.isEmpty) {
+                      return;
+                    }
+
+                    ChatController.instance.sendChat(
+                        message: chatTextEditingController.text,
+                        receiverId: widget.receiverId);
+                    chatTextEditingController.clear();
+                    setState(() {});
+                  },
+                  icon: const Icon(Icons.send)),
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(15))),
         ),

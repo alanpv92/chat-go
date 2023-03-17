@@ -12,3 +12,5 @@ typedef AuthenticationResponse = Either<AuthErrorMessage, User>;
 typedef HasuraResponse = Either<AppNetworkException, Map<String, dynamic>>;
 
 typedef HasuraSubscriptionResponse = Either<AppNetworkException, Snapshot>;
+
+typedef SendChatResponse = Either<bool,String>;

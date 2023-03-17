@@ -25,6 +25,9 @@ class HasuraMutation {
       mutation sendChat {
         insert_chats(objects: {is_receiver_read: false, message: "${message}", receiver_id: "${receiverId}", sender_id: "${senderId}"}) {
           affected_rows
+          returning {
+            id
+          }
         }
       }
 

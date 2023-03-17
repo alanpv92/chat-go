@@ -20,6 +20,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
+    
     ChatController.instance.closeChatSnapShot();
     super.dispose();
   }
@@ -48,16 +49,16 @@ class _ChatScreenState extends State<ChatScreen> {
             vertical: SizeConfig.blockSizeVertical * 1),
         child: Consumer(
           builder: (context, ref, child) {
-            final chatController = ref.watch(chatProvider);
+            final chatController = ref.read(chatProvider);
             return Column(
               children: [
                 Expanded(
                   child: GestureDetector(
                       onTap: () {
-                        FocusScopeNode currentFocus = FocusScope.of(context);
-                        if (!currentFocus.hasPrimaryFocus) {
-                          currentFocus.unfocus();
-                        }
+                        // FocusScopeNode currentFocus = FocusScope.of(context);
+                        // if (!currentFocus.hasPrimaryFocus) {
+                        //   currentFocus.unfocus();
+                        // }
                       },
                       child: FutureBuilder(
                           future: chatController.setUpSenderReciverConnection(
@@ -72,14 +73,20 @@ class _ChatScreenState extends State<ChatScreen> {
                                       snapshot.hasData) {
                                     chatController
                                         .populateCurrentChat(snapshot.data);
-                                    return ListView.builder(
-                                      itemBuilder: (context, index) {
-                                        return ChatCard(
-                                            chat: chatController
-                                                .currentOpenChat[index]);
+                                    return Consumer(
+                                      builder: (context, ref, child) {
+                                        ref.watch(chatProvider);
+                                        return ListView.builder(
+                                          itemBuilder: (context, index) {
+                                            log('i am being called');
+                                            return ChatCard(
+                                                chat: chatController
+                                                    .currentOpenChat[index]);
+                                          },
+                                          itemCount: chatController
+                                              .currentOpenChat.length,
+                                        );
                                       },
-                                      itemCount:
-                                          chatController.currentOpenChat.length,
                                     );
                                   }
                                   return const Center(
@@ -94,7 +101,9 @@ class _ChatScreenState extends State<ChatScreen> {
                             );
                           })),
                 ),
-                const ChatBottom(),
+                ChatBottom(
+                  receiverId: widget.chatPreview.receiverid,
+                ),
               ],
             );
           },

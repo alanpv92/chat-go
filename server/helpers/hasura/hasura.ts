@@ -11,7 +11,7 @@ class HasuraHelper {
     return this.instance;
   }
 
-  async query(queryString: String, headersData: any) {
+  async query(queryString: String) {
     try {
       const graphqlQuery = {
         query: queryString,
@@ -20,11 +20,9 @@ class HasuraHelper {
 
       let hasuraHeadersData = {
         "content-type": "application/json",
-        "x-hasura-admin-secret": headersData["x-hasura-admin-secret"] || "",
-        "X-Hasura-Role": headersData["x-hasura-role"] || "",
-        "X-Hasura-Is-Owner": headersData["x-hasura-is-owner"] || "",
+        "x-hasura-admin-secret":process.env.HASURA_GRAPHQL_ADMIN_SECRET,
       };
-      console.log(headersData); 
+       
       let response = await axios({
         url: ConstantHelper.hasuraBaseUrl,
         method: "post",
