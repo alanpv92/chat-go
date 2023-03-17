@@ -78,7 +78,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                         ref.watch(chatProvider);
                                         return ListView.builder(
                                           itemBuilder: (context, index) {
-                                            log('i am being called');
+                                            
                                             return ChatCard(
                                                 chat: chatController
                                                     .currentOpenChat[index]);

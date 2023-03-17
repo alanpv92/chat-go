@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/chat.dart';
 import 'package:chatgoclient/manager/route.dart';
@@ -42,52 +44,86 @@ class HomeScreen extends StatelessWidget {
               vertical: SizeConfig.blockSizeVertical * 1),
           child: Consumer(
             builder: (context, ref, child) {
-              final chatController = ref.watch(chatProvider);
-              return ListView.separated(
-                itemBuilder: (context, index) {
-                  return ListTile(
-                      onTap: () {
-                        Get.to(
-                          () => ChatScreen(
-                            chatPreview: chatController.dummyChatPreview[index],
-                          ),
+              final chatController = ref.read(chatProvider);
+              return FutureBuilder(
+                future: chatController.setUpChatPreviewSnapShot(),
+                builder: (context, data) {
+                  if (data.connectionState == ConnectionState.done &&
+                      data.hasData) {
+                    return StreamBuilder(
+                      stream: data.data,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                                ConnectionState.active &&
+                            snapshot.hasData) {
+                          chatController.populateCurrentChatPreviews(
+                              data: snapshot.data);
+                          return ListView.separated(
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                  onTap: () {
+                                    Get.to(
+                                      () => ChatScreen(
+                                        chatPreview: chatController
+                                            .currentChatPreviews[index],
+                                      ),
+                                    );
+                                  },
+                                  leading: CircleAvatar(
+                                    child: Text(chatController
+                                        .currentChatPreviews[index]
+                                        .receiverName[0]),
+                                  ),
+                                  title: Text(
+                                    chatController
+                                        .currentChatPreviews[index].receiverName,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall!
+                                        .copyWith(color: Colors.black),
+                                  ),
+                                  subtitle: Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Text(
+                                      chatController
+                                          .currentChatPreviews[index].lastMessage,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium,
+                                    ),
+                                  ),
+                                  trailing: SizedBox(
+                                      width:
+                                          SizeConfig.safeBlockHorizontal * 20,
+                                      child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: Icon(
+                                          Icons.check,
+                                          color: chatController
+                                                  .currentChatPreviews[index]
+                                                  .isLastMessageRead
+                                              ? Colors.green
+                                              : null,
+                                          size: 20,
+                                        ),
+                                      )));
+                            },
+                            itemCount: chatController.currentChatPreviews.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              return const Divider();
+                            },
+                          );
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
                         );
                       },
-                      leading: CircleAvatar(
-                        child: Text(chatController
-                            .dummyChatPreview[index].receiverName[0]),
-                      ),
-                      title: Text(
-                        chatController.dummyChatPreview[index].receiverName,
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineSmall!
-                            .copyWith(color: Colors.black),
-                      ),
-                      subtitle: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Text(
-                          chatController.dummyChatPreview[index].lastMessage,
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ),
-                      trailing: SizedBox(
-                          width: SizeConfig.safeBlockHorizontal * 20,
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: Icon(
-                              Icons.check,
-                              color: chatController
-                                      .dummyChatPreview[index].isLastMessageRead
-                                  ? Colors.green
-                                  : null,
-                              size: 20,
-                            ),
-                          )));
-                },
-                itemCount: chatController.dummyChatPreview.length,
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Divider();
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 },
               );
             },

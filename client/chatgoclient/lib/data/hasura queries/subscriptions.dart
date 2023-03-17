@@ -22,4 +22,22 @@ subscription watchUserSenderChat {
 ''';
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+
+  static getChatPreviewSubScription({required String senderId}) => '''
+subscription getChatPreview {
+  users {
+    chats(where: {receiver_id: {_eq: "$senderId"}}, limit: 1, order_by: {created_at: desc}) {
+      message
+      sender_id
+      is_receiver_read
+      user {
+        user_name
+      }
+    }
+  }
+}
+
+
+''';
+//////////////////////////////////////////////////////////////////////////////////
 }

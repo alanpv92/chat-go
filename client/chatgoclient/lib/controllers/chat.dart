@@ -27,18 +27,21 @@ class ChatController extends BaseController {
 
   late Snapshot chatSnapShot;
 
-  final dummyChatPreview = [
-    ChatPreview(receiverName: 'alan1', receiverid: '1', lastMessage: 'hello'),
-    ChatPreview(
-        receiverName: 'paul1',
-        receiverid: '2',
-        lastMessage: 'are comming',
-        isLastMessageRead: true),
-    ChatPreview(
-        receiverName: 'varghese1', receiverid: '2', lastMessage: 'hello'),
-  ];
+  late Snapshot chatPreviewSnapShot;
 
   final List<Chat> currentOpenChat = [];
+
+  final List<ChatPreview> currentChatPreviews = [];
+
+
+  Future<Snapshot> setUpChatPreviewSnapShot() async {
+    final respone = await _chatHasuraService.getChatPreviewSubscription(
+        senderId: UserMangementController.instance.user.userId);
+    respone.fold((l) {}, (r) {
+      chatPreviewSnapShot = r;
+    });
+    return chatPreviewSnapShot;
+  }
 
   Future<Snapshot> setUpSenderReciverConnection(
       {required String reciverId}) async {
@@ -63,12 +66,28 @@ class ChatController extends BaseController {
     currentOpenChat.addAll(conChats);
   }
 
+  populateCurrentChatPreviews({required Map<String, dynamic> data}) async {
+    final List chats = data['data']['users'];
+    currentChatPreviews.clear();
+    for (var element in chats) {
+  
+      if ((element['chats'] as List).isNotEmpty) {
+  
+        currentChatPreviews.add(ChatPreview(
+            receiverName: element['chats'][0]['user']['user_name'],
+            receiverid: element['chats'][0]['sender_id'],
+            isLastMessageRead: element['chats'][0]['is_receiver_read'],
+            lastMessage: element['chats'][0]['message']));
+      }
+    }
+    log(currentChatPreviews.length.toString());
+  }
+
   clearCurrentChats() {
     currentOpenChat.clear();
   }
 
   sendChat({required String message, required String receiverId}) async {
-    log('message is $message');
     final dummyChat = Chat(
         chatId: UniqueKey().toString(),
         isReceiverRead: false,
@@ -84,7 +103,6 @@ class ChatController extends BaseController {
                 senderId: UserMangementController.instance.user.userId)
             .getRequestData());
     response.fold((l) {
-     
       CustomSnackBar.instance.showError(errorText: "could not send message");
       currentOpenChat.remove(dummyChat);
       notifyListeners();

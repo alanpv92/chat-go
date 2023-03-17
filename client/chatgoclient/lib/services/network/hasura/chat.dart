@@ -13,11 +13,16 @@ class ChatHasuraService {
 
   Future<HasuraSubscriptionResponse> getUserReceiverSnapShot(
       {required String senderId, required String receiverId}) async {
-
-    
     final response = await _appHasuraConnect.subscription(
         query: HasuraSubscriptions.getUserSenderSubscription(
             senderId: senderId, receiverId: receiverId));
+    return response;
+  }
+
+  Future<HasuraSubscriptionResponse> getChatPreviewSubscription({required String senderId}) async {
+    final response = await _appHasuraConnect.subscription(
+        query:
+            HasuraSubscriptions.getChatPreviewSubScription(senderId: senderId));
     return response;
   }
 }

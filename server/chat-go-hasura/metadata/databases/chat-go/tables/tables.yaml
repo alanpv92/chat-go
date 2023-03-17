@@ -1,2 +1,3 @@
+- "!include public_chartpreview.yaml"
 - "!include public_chats.yaml"
 - "!include public_users.yaml"

@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:chatgoclient/data/custom%20types/custom_types.dart';
 import 'package:chatgoclient/data/interfaces/chat.dart';
@@ -18,4 +18,6 @@ class ChatService implements ChatInterface {
       return right(r['id']);
     });
   }
+
+  
 }

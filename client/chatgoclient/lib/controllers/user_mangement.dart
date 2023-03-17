@@ -39,7 +39,7 @@ class UserMangementController {
   initToken() async {
     final tokenFromStorage = await _userBoxStorage.getToken() as String?;
     _appToken = tokenFromStorage;
-    log("token is $_appToken");
+   
   }
 
   storeToken({required String token}) async {
