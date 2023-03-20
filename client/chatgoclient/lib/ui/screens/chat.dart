@@ -19,8 +19,16 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+     
+      ChatController.instance.updateReadStatus();
+    });
+    super.initState();
+  }
+
+  @override
   void dispose() {
-    
     ChatController.instance.closeChatSnapShot();
     super.dispose();
   }
@@ -78,7 +86,6 @@ class _ChatScreenState extends State<ChatScreen> {
                                         ref.watch(chatProvider);
                                         return ListView.builder(
                                           itemBuilder: (context, index) {
-                                            
                                             return ChatCard(
                                                 chat: chatController
                                                     .currentOpenChat[index]);

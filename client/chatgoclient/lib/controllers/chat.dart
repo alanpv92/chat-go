@@ -123,6 +123,12 @@ class ChatController extends BaseController {
     });
   }
 
+  Future updateReadStatus() async {
+  
+    _chatHasuraService.updateChatPreview(
+        userId: UserMangementController.instance.user.userId);
+  }
+
   closeChatSnapShot() {
     clearCurrentChats();
     chatSnapShot.close();

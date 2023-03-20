@@ -35,7 +35,7 @@ class AppHasuraConnect {
 
   Future mutation({required String query}) async {
     try {
-      final response = await _hasuraConnect.query(query);
+      final response = await _hasuraConnect.mutation(query);
       if (response['errors'] != null) {
         return left(AppNetworkException(
             message: TextManger.instance.randomError, status: 400));
@@ -54,7 +54,6 @@ class AppHasuraConnect {
       final response = await _hasuraConnect.subscription(query);
       return right(response);
     } catch (e) {
-     
       return left(AppNetworkException(
           message: TextManger.instance.randomError, status: 400));
     }
