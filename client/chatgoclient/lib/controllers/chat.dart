@@ -68,14 +68,24 @@ class ChatController extends BaseController {
 
   populateCurrentChatPreviews({required Map<String, dynamic> data}) async {
     final List chats = data['data']['chats'];
+
     currentChatPreviews.clear();
     for (var element in chats) {
       currentChatPreviews.add(ChatPreview(
-          receiverName: element['userBySenderId']['user_name'],
-          receiverid: element['userBySenderId']['id'],
-          isLastMessageRead: element['is_receiver_read'],
-          lastMessage: element['message']));
+          receiverName: element['userBySenderId']['chatsBySenderId'][0]
+              ['userBySenderId']['user_name'],
+          receiverid: element['userBySenderId']['chatsBySenderId'][0]
+              ['userBySenderId']['id'],
+          lastMessage: element['userBySenderId']['chatsBySenderId'][0]
+              ['message']));
     }
+    // for (var element in chats) {
+    //   currentChatPreviews.add(ChatPreview(
+    //       receiverName: element['userBySenderId']['user_name'],
+    //       receiverid: element['userBySenderId']['id'],
+    //       isLastMessageRead: element['is_receiver_read'],
+    //       lastMessage: element['message']));
+    // }
   }
 
   clearCurrentChats() {
