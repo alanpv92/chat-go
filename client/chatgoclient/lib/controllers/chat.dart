@@ -33,7 +33,6 @@ class ChatController extends BaseController {
 
   final List<ChatPreview> currentChatPreviews = [];
 
-
   Future<Snapshot> setUpChatPreviewSnapShot() async {
     final respone = await _chatHasuraService.getChatPreviewSubscription(
         senderId: UserMangementController.instance.user.userId);
@@ -61,26 +60,22 @@ class ChatController extends BaseController {
 
   populateCurrentChat(Map<String, dynamic> data) {
     currentOpenChat.clear();
+
     final List chats = data['data']['chats'];
     final conChats = chats.map((e) => Chat.fromJson(e)).toList();
     currentOpenChat.addAll(conChats);
   }
 
   populateCurrentChatPreviews({required Map<String, dynamic> data}) async {
-    final List chats = data['data']['users'];
+    final List chats = data['data']['chats'];
     currentChatPreviews.clear();
     for (var element in chats) {
-  
-      if ((element['chats'] as List).isNotEmpty) {
-  
-        currentChatPreviews.add(ChatPreview(
-            receiverName: element['chats'][0]['user']['user_name'],
-            receiverid: element['chats'][0]['sender_id'],
-            isLastMessageRead: element['chats'][0]['is_receiver_read'],
-            lastMessage: element['chats'][0]['message']));
-      }
+      currentChatPreviews.add(ChatPreview(
+          receiverName: element['userBySenderId']['user_name'],
+          receiverid: element['userBySenderId']['id'],
+          isLastMessageRead: element['is_receiver_read'],
+          lastMessage: element['message']));
     }
-    log(currentChatPreviews.length.toString());
   }
 
   clearCurrentChats() {

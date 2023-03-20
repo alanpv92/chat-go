@@ -1,22 +1,7 @@
 table:
   name: users
   schema: public
-object_relationships:
-  - name: chartpreview
-    using:
-      foreign_key_constraint_on:
-        column: sender_id
-        table:
-          name: chartpreview
-          schema: public
 array_relationships:
-  - name: chartpreviews
-    using:
-      foreign_key_constraint_on:
-        column: receiver_id
-        table:
-          name: chartpreview
-          schema: public
   - name: chats
     using:
       foreign_key_constraint_on:

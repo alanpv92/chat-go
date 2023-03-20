@@ -2,10 +2,10 @@ import 'dart:io';
 
 class AppConfig {
   static String baseURL =
-      Platform.isIOS ? 'http://127.0.0.1:5000/' : 'http://10.1.112.27:5000/';
+      Platform.isIOS ? 'http://127.0.0.1:5000/' : 'http://10.1.104.134:5000/';
   static String graphQLURL = Platform.isIOS
       ? 'http://localhost:8080/v1/graphql'
-      : 'http://10.1.112.27:8080/v1/graphql';
+      : 'http://10.1.104.134:8080/v1/graphql';
   // static const String baseURL = ;
 }
 

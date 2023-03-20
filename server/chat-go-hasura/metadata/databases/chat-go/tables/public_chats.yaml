@@ -8,11 +8,3 @@ object_relationships:
   - name: userBySenderId
     using:
       foreign_key_constraint_on: sender_id
-array_relationships:
-  - name: chartpreviews
-    using:
-      foreign_key_constraint_on:
-        column: message_id
-        table:
-          name: chartpreview
-          schema: public

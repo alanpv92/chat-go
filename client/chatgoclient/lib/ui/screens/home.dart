@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:chatgoclient/config/size_config.dart';
+import 'package:chatgoclient/controllers/authentication.dart';
 import 'package:chatgoclient/controllers/chat.dart';
 import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/text.dart';
@@ -33,7 +34,11 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(
               width: 15,
             ),
-            IconButton(onPressed: () {}, icon: const Icon(Icons.people)),
+            IconButton(
+                onPressed: () {
+                  AuthenticationController.instance.logoutUser();
+                },
+                icon: const Icon(Icons.people)),
             const SizedBox(
               width: 10,
             )
@@ -59,6 +64,7 @@ class HomeScreen extends StatelessWidget {
                             snapshot.hasData) {
                           chatController.populateCurrentChatPreviews(
                               data: snapshot.data);
+
                           return chatController.currentChatPreviews.isEmpty
                               ? const Center(
                                   child: EmptyBox(),

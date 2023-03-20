@@ -1,4 +1,4 @@
-
+import 'dart:developer';
 
 import 'package:chatgoclient/data/custom%20types/custom_types.dart';
 import 'package:chatgoclient/data/exceptions/app_newtork.dart';
@@ -54,6 +54,7 @@ class AppHasuraConnect {
       final response = await _hasuraConnect.subscription(query);
       return right(response);
     } catch (e) {
+     
       return left(AppNetworkException(
           message: TextManger.instance.randomError, status: 400));
     }
