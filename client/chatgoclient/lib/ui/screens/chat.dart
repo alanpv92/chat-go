@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/chat.dart';
-
+import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/models/chat_preview.dart';
 import 'package:chatgoclient/ui/widgets/chat/chat_bottom.dart';
 import 'package:chatgoclient/ui/widgets/chat/chat_card.dart';
@@ -20,9 +18,10 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
+    ChatController.instance.initScrollController();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-     
-      ChatController.instance.updateReadStatus();
+      ChatController.instance
+          .updateReadStatus(id: UserMangementController.instance.user.userId);
     });
     super.initState();
   }
@@ -30,6 +29,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     ChatController.instance.closeChatSnapShot();
+    ChatController.instance.disposeScrollController();
     super.dispose();
   }
 
@@ -85,6 +85,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                       builder: (context, ref, child) {
                                         ref.watch(chatProvider);
                                         return ListView.builder(
+                                          controller:
+                                              chatController.scrollController,
                                           itemBuilder: (context, index) {
                                             return ChatCard(
                                                 chat: chatController

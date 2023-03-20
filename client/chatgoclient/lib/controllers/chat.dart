@@ -33,6 +33,25 @@ class ChatController extends BaseController {
 
   final List<ChatPreview> currentChatPreviews = [];
 
+  late ScrollController _scrollController;
+
+  ScrollController get scrollController => _scrollController;
+
+  initScrollController() {
+    _scrollController = ScrollController();
+  }
+
+  disposeScrollController() {
+    _scrollController.dispose();
+  }
+
+  scrollDown() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300), curve: Curves.linear);
+    }
+  }
+
   Future<Snapshot> setUpChatPreviewSnapShot() async {
     final respone = await _chatHasuraService.getChatPreviewSubscription(
         senderId: UserMangementController.instance.user.userId);
@@ -60,10 +79,15 @@ class ChatController extends BaseController {
 
   populateCurrentChat(Map<String, dynamic> data) {
     currentOpenChat.clear();
-
     final List chats = data['data']['chats'];
     final conChats = chats.map((e) => Chat.fromJson(e)).toList();
     currentOpenChat.addAll(conChats);
+    Future.delayed(
+      Duration.zero,
+      () {
+        scrollDown();
+      },
+    );
   }
 
   populateCurrentChatPreviews({required Map<String, dynamic> data}) async {
@@ -71,21 +95,18 @@ class ChatController extends BaseController {
 
     currentChatPreviews.clear();
     for (var element in chats) {
-      currentChatPreviews.add(ChatPreview(
-          receiverName: element['userBySenderId']['chatsBySenderId'][0]
-              ['userBySenderId']['user_name'],
-          receiverid: element['userBySenderId']['chatsBySenderId'][0]
-              ['userBySenderId']['id'],
-          lastMessage: element['userBySenderId']['chatsBySenderId'][0]
-              ['message']));
+      currentChatPreviews.add(
+        ChatPreview(
+            isLastMessageRead: element['userBySenderId']['chatsBySenderId'][0]
+                ['is_receiver_read'],
+            receiverName: element['userBySenderId']['chatsBySenderId'][0]
+                ['userBySenderId']['user_name'],
+            receiverid: element['userBySenderId']['chatsBySenderId'][0]
+                ['userBySenderId']['id'],
+            lastMessage: element['userBySenderId']['chatsBySenderId'][0]
+                ['message']),
+      );
     }
-    // for (var element in chats) {
-    //   currentChatPreviews.add(ChatPreview(
-    //       receiverName: element['userBySenderId']['user_name'],
-    //       receiverid: element['userBySenderId']['id'],
-    //       isLastMessageRead: element['is_receiver_read'],
-    //       lastMessage: element['message']));
-    // }
   }
 
   clearCurrentChats() {
@@ -107,6 +128,7 @@ class ChatController extends BaseController {
                 receiverId: receiverId,
                 senderId: UserMangementController.instance.user.userId)
             .getRequestData());
+
     response.fold((l) {
       CustomSnackBar.instance.showError(errorText: "could not send message");
       currentOpenChat.remove(dummyChat);
@@ -120,13 +142,12 @@ class ChatController extends BaseController {
           senderId: dummyChat.senderId);
       currentOpenChat.remove(dummyChat);
       currentOpenChat.add(chat);
+      scrollDown();
     });
   }
 
-  Future updateReadStatus() async {
-  
-    _chatHasuraService.updateChatPreview(
-        userId: UserMangementController.instance.user.userId);
+  Future updateReadStatus({required String id}) async {
+    _chatHasuraService.updateChatPreview(userId: id);
   }
 
   closeChatSnapShot() {

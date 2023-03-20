@@ -1,3 +1,5 @@
+
+
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/models/chat.dart';
@@ -9,6 +11,7 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+  
     return Align(
       alignment: chat.senderId == UserMangementController.instance.user.userId
           ? Alignment.bottomRight
@@ -17,7 +20,9 @@ class ChatCard extends StatelessWidget {
         width: SizeConfig.safeBlockHorizontal * 35,
         child: Card(
           color: chat.senderId == UserMangementController.instance.user.userId
-              ? Colors.blueGrey
+              ? chat.isReceiverRead
+                  ? Colors.green
+                  : Colors.grey
               : Colors.blue,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -29,14 +34,6 @@ class ChatCard extends StatelessWidget {
                     chat.message,
                   ),
                 ),
-                Visibility(
-                  visible: chat.senderId ==
-                      UserMangementController.instance.user.userId,
-                  child: Icon(
-                    Icons.check,
-                    color: chat.isReceiverRead ? Colors.green : null,
-                  ),
-                )
               ],
             ),
           ),

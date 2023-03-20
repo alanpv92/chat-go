@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/authentication.dart';
@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
                             snapshot.hasData) {
                           chatController.populateCurrentChatPreviews(
                               data: snapshot.data);
-
+                              
                           return chatController.currentChatPreviews.isEmpty
                               ? const Center(
                                   child: EmptyBox(),
