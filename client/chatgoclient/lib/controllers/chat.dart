@@ -29,11 +29,11 @@ class ChatController extends BaseController {
 
   late Snapshot chatPreviewSnapShot;
 
-  final List<Chat> currentOpenChat = [];
-
   final List<ChatPreview> currentChatPreviews = [];
 
   late ScrollController _scrollController;
+
+  final Map<String, List<Chat>> userChats = {};
 
   ScrollController get scrollController => _scrollController;
 
@@ -46,10 +46,17 @@ class ChatController extends BaseController {
   }
 
   scrollDown() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300), curve: Curves.linear);
-    }
+    Future.delayed(
+      Duration.zero,
+      () {
+        if (_scrollController.hasClients) {
+          _scrollController.animateTo(
+              _scrollController.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.linear);
+        }
+      },
+    );
   }
 
   Future<Snapshot> setUpChatPreviewSnapShot() async {
@@ -77,22 +84,53 @@ class ChatController extends BaseController {
     return chatSnapShot;
   }
 
-  populateCurrentChat(Map<String, dynamic> data) {
-    currentOpenChat.clear();
-    final List chats = data['data']['chats'];
-    final conChats = chats.map((e) => Chat.fromJson(e)).toList();
-    currentOpenChat.addAll(conChats);
-    Future.delayed(
-      Duration.zero,
-      () {
-        scrollDown();
-      },
-    );
+  Future populateInitialChats({required String reciverId}) async {
+    if (userChats[reciverId] != null) {
+      final chatCount = await _chatHasuraService.getUserChatCount(
+          senderId: UserMangementController.instance.user.userId,
+          receiverId: reciverId);
+    await  chatCount.fold((l) {
+        CustomSnackBar.instance
+            .showError(errorText: TextManger.instance.chatCountError);
+      }, (r) async {
+        final count = r['chats_aggregate']['aggregate']['count'];
+        if (userChats[reciverId]!.length < count) {
+          final numberOfDataToFecth = count - userChats[reciverId]!.length;
+          final reponse = await _chatHasuraService.getLatestUserChats(
+              senderId: UserMangementController.instance.user.userId,
+              receiverId: reciverId,
+              limit: numberOfDataToFecth);
+    
+          reponse.fold((l) {
+            CustomSnackBar.instance
+                .showError(errorText: TextManger.instance.chatCountError);
+          }, (r) {
+            final List chatData = r['chats'];
+            final conChats = chatData.map((e) => Chat.fromJson(e)).toList();
+            userChats[reciverId]!.addAll(conChats.reversed);
+        
+          });
+        }
+      });
+    } else {
+      final response = await _chatHasuraService.getAllUserChats(
+          senderId: UserMangementController.instance.user.userId,
+          receiverId: reciverId);
+      response.fold((l) {
+        CustomSnackBar.instance
+            .showError(errorText: TextManger.instance.randomError);
+        Get.back();
+      }, (r) {
+        final List chatData = r['chats'];
+        final conChats = chatData.map((e) => Chat.fromJson(e)).toList();
+        userChats[reciverId] = [];
+        userChats[reciverId]!.addAll(conChats);
+      });
+    }
   }
 
   populateCurrentChatPreviews({required Map<String, dynamic> data}) async {
     final List chats = data['data']['chats'];
-
     currentChatPreviews.clear();
     for (var element in chats) {
       currentChatPreviews.add(
@@ -109,10 +147,6 @@ class ChatController extends BaseController {
     }
   }
 
-  clearCurrentChats() {
-    currentOpenChat.clear();
-  }
-
   sendChat({required String message, required String receiverId}) async {
     final dummyChat = Chat(
         chatId: UniqueKey().toString(),
@@ -120,7 +154,10 @@ class ChatController extends BaseController {
         message: message,
         receiverId: receiverId,
         senderId: UserMangementController.instance.user.userId);
-    currentOpenChat.add(dummyChat);
+    if (userChats[receiverId] == null) {
+      userChats[receiverId] = [];
+    }
+    userChats[receiverId]!.add(dummyChat);
     notifyListeners();
     final response = await _chatService.sendChat(
         chatData: ChatRequest(
@@ -131,7 +168,7 @@ class ChatController extends BaseController {
 
     response.fold((l) {
       CustomSnackBar.instance.showError(errorText: "could not send message");
-      currentOpenChat.remove(dummyChat);
+      userChats[receiverId]!.remove(dummyChat);
       notifyListeners();
     }, (r) {
       final Chat chat = Chat(
@@ -140,8 +177,8 @@ class ChatController extends BaseController {
           message: dummyChat.message,
           receiverId: dummyChat.receiverId,
           senderId: dummyChat.senderId);
-      currentOpenChat.remove(dummyChat);
-      currentOpenChat.add(chat);
+      userChats[receiverId]!.remove(dummyChat);
+      userChats[receiverId]!.add(chat);
       scrollDown();
     });
   }
@@ -151,7 +188,6 @@ class ChatController extends BaseController {
   }
 
   closeChatSnapShot() {
-    clearCurrentChats();
-    chatSnapShot.close();
+    // chatSnapShot.close();
   }
 }

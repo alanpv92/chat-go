@@ -21,6 +21,7 @@ class CommonText {
   String searchUserNameText = tr('enter_user_name');
   String emptyBoxText = tr('empty_text');
   String retry = "retry";
+  String chatCountError = tr('chat_count_error');
 }
 
 class TextManger with ErrorText, AuthText, CommonText {

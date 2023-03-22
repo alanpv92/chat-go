@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:chatgoclient/data/custom%20types/custom_types.dart';
+import 'package:chatgoclient/data/hasura%20queries/hasura_query.dart';
 import 'package:chatgoclient/data/hasura%20queries/subscriptions.dart';
 import 'package:chatgoclient/services/network/app_hasrua_connect.dart';
 
@@ -38,5 +39,31 @@ class ChatHasuraService {
       log(r.toString());
     });
     return response;
+  }
+
+  Future<HasuraResponse> getAllUserChats(
+      {required String senderId, required String receiverId}) async {
+    final response = await _appHasuraConnect.query(
+        query: HasuraQuery.getUserChat(
+            senderId: senderId, receiverId: receiverId));
+    return response;
+  }
+
+  Future<HasuraResponse> getUserChatCount(
+      {required String senderId, required String receiverId}) async {
+    final response = await _appHasuraConnect.query(
+        query: HasuraQuery.getUserChatCount(
+            senderId: senderId, receiverId: receiverId));
+    return response;
+  }
+
+  Future<HasuraResponse> getLatestUserChats(
+      {required String senderId,
+      required String receiverId,
+      required int limit}) async {
+    final responose = await _appHasuraConnect.query(
+        query: HasuraQuery.getUserLatestChats(
+            senderId: senderId, receiverId: receiverId, limit: limit));
+    return responose;
   }
 }

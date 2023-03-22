@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/chat.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
@@ -19,10 +21,6 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     ChatController.instance.initScrollController();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ChatController.instance
-          .updateReadStatus(id: UserMangementController.instance.user.userId);
-    });
     super.initState();
   }
 
@@ -69,42 +67,30 @@ class _ChatScreenState extends State<ChatScreen> {
                         // }
                       },
                       child: FutureBuilder(
-                          future: chatController.setUpSenderReciverConnection(
+                          future: chatController.populateInitialChats(
                               reciverId: widget.chatPreview.receiverid),
                           builder: (context, data) {
                             if (data.connectionState == ConnectionState.done) {
-                              return StreamBuilder(
-                                stream: data.data,
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                          ConnectionState.active &&
-                                      snapshot.hasData) {
-                                    chatController
-                                        .populateCurrentChat(snapshot.data);
-                                    return Consumer(
-                                      builder: (context, ref, child) {
-                                        ref.watch(chatProvider);
-                                        return ListView.builder(
-                                          controller:
-                                              chatController.scrollController,
-                                          itemBuilder: (context, index) {
-                                            return ChatCard(
-                                                chat: chatController
-                                                    .currentOpenChat[index]);
-                                          },
-                                          itemCount: chatController
-                                              .currentOpenChat.length,
-                                        );
-                                      },
-                                    );
-                                  }
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
+                              return Consumer(
+                                builder: (context, ref, child) {
+                                  ref.watch(chatProvider);
+                                  chatController.scrollDown();
+                                 
+                                  return ListView.builder(
+                                    controller: chatController.scrollController,
+                                    itemBuilder: (context, index) {
+                                      return ChatCard(
+                                          chat: chatController.userChats[widget
+                                              .chatPreview.receiverid]![index]);
+                                    },
+                                    itemCount: chatController
+                                        .userChats[
+                                            widget.chatPreview.receiverid]
+                                        ?.length,
                                   );
                                 },
                               );
                             }
-
                             return const Center(
                               child: CircularProgressIndicator(),
                             );
