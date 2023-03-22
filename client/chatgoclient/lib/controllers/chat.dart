@@ -79,6 +79,17 @@ class ChatController extends BaseController {
       Get.back();
     }, (r) {
       chatSnapShot = r;
+      r.listen((event) {
+        final chat = Chat.fromJson(event['data']['chats'][0]);
+        final lastChatId = userChats[reciverId]?.last.chatId;
+        if (lastChatId != null) {
+          if (lastChatId == chat.chatId) {
+            return;
+          }
+          userChats[reciverId]?.add(chat);
+          notifyListeners();
+        }
+      });
     });
 
     return chatSnapShot;
@@ -89,9 +100,10 @@ class ChatController extends BaseController {
       final chatCount = await _chatHasuraService.getUserChatCount(
           senderId: UserMangementController.instance.user.userId,
           receiverId: reciverId);
-    await  chatCount.fold((l) {
+      await chatCount.fold((l) {
         CustomSnackBar.instance
             .showError(errorText: TextManger.instance.chatCountError);
+        return;
       }, (r) async {
         final count = r['chats_aggregate']['aggregate']['count'];
         if (userChats[reciverId]!.length < count) {
@@ -100,15 +112,15 @@ class ChatController extends BaseController {
               senderId: UserMangementController.instance.user.userId,
               receiverId: reciverId,
               limit: numberOfDataToFecth);
-    
+
           reponse.fold((l) {
             CustomSnackBar.instance
                 .showError(errorText: TextManger.instance.chatCountError);
+            return;
           }, (r) {
             final List chatData = r['chats'];
             final conChats = chatData.map((e) => Chat.fromJson(e)).toList();
             userChats[reciverId]!.addAll(conChats.reversed);
-        
           });
         }
       });
@@ -120,6 +132,7 @@ class ChatController extends BaseController {
         CustomSnackBar.instance
             .showError(errorText: TextManger.instance.randomError);
         Get.back();
+        return;
       }, (r) {
         final List chatData = r['chats'];
         final conChats = chatData.map((e) => Chat.fromJson(e)).toList();
@@ -127,6 +140,7 @@ class ChatController extends BaseController {
         userChats[reciverId]!.addAll(conChats);
       });
     }
+    await setUpSenderReciverConnection(reciverId: reciverId);
   }
 
   populateCurrentChatPreviews({required Map<String, dynamic> data}) async {
@@ -188,6 +202,6 @@ class ChatController extends BaseController {
   }
 
   closeChatSnapShot() {
-    // chatSnapShot.close();
+    chatSnapShot.close();
   }
 }

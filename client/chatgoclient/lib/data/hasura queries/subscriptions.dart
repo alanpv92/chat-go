@@ -5,10 +5,7 @@ class HasuraSubscriptions {
       '''
 
 subscription watchUserSenderChat {
-  chats(where: {_or: [
-    {sender_id: {_eq: "$senderId"}, receiver_id: {_eq: "$receiverId"}},
-    {receiver_id: {_eq: "$senderId"}, sender_id: {_eq: "$receiverId"}}  
-  ]}) {
+  chats(where: {_or: [{sender_id: {_eq: "$senderId"}, receiver_id: {_eq: "$receiverId"}}, {receiver_id: {_eq: "$senderId"}, sender_id: {_eq: "$receiverId"}}]}, limit: 1, order_by: {created_at: desc}) {
     message
     is_receiver_read
     id
@@ -16,6 +13,7 @@ subscription watchUserSenderChat {
     sender_id
   }
 }
+
 
 
 
