@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/models/chat.dart';
@@ -79,7 +77,10 @@ class ChatController extends BaseController {
       Get.back();
     }, (r) {
       chatSnapShot = r;
-      r.listen((event) {
+      r.listen((event) async {
+        if (event['data']['chats'] == []) {
+          return;
+        }
         final chat = Chat.fromJson(event['data']['chats'][0]);
         final lastChatId = userChats[reciverId]?.last.chatId;
         if (lastChatId != null) {
@@ -87,7 +88,32 @@ class ChatController extends BaseController {
             return;
           }
           userChats[reciverId]?.add(chat);
-          notifyListeners();
+          if (chat.receiverId == UserMangementController.instance.user.userId) {
+            final response = await _chatHasuraService.updateSingleChatStatus(
+                chatId: chat.chatId);
+            response.fold((l) {
+              //handle error case
+            }, (r) {
+              final chatId = r['update_chats_by_pk']['id'];
+              final index = userChats[reciverId]!.indexWhere(
+                (element) => element.chatId == chatId,
+              );
+              if (index != -1) {
+                Chat currentChat = userChats[reciverId]![index];
+                Chat updatedChat = Chat(
+                    chatId: chatId,
+                    isReceiverRead: true,
+                    message: "currentChat.message",
+                    receiverId: currentChat.receiverId,
+                    senderId: currentChat.senderId);
+                userChats[reciverId]![index] = updatedChat;
+
+                notifyListeners();
+              }
+            });
+          } else {
+            notifyListeners();
+          }
         }
       });
     });
@@ -197,8 +223,10 @@ class ChatController extends BaseController {
     });
   }
 
-  Future updateReadStatus({required String id}) async {
-    _chatHasuraService.updateChatPreview(userId: id);
+  Future updateReadStatus({required String receiverId}) async {
+    _chatHasuraService.updateChatPreview(
+        receiverId: UserMangementController.instance.user.userId,
+        senderId: receiverId);
   }
 
   closeChatSnapShot() {

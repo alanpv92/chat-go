@@ -30,9 +30,12 @@ class ChatHasuraService {
     return response;
   }
 
-  Future updateChatPreview({required String userId}) async {
+  Future updateChatPreview(
+      {required String senderId, required String receiverId}) async {
+
     final response = await _appHasuraConnect.mutation(
-        query: HasuraMutation.updateReadStatus(userId: userId));
+        query: HasuraMutation.updateReadStatus(
+            receiverId: receiverId, senderId: senderId));
     response.fold((l) {
       log(l.message.toString());
     }, (r) {
@@ -65,5 +68,13 @@ class ChatHasuraService {
         query: HasuraQuery.getUserLatestChats(
             senderId: senderId, receiverId: receiverId, limit: limit));
     return responose;
+  }
+
+  Future<HasuraResponse> updateSingleChatStatus(
+      {required String chatId}) async {
+
+    final response = await _appHasuraConnect.mutation(
+        query: HasuraMutation.updateSingleChatByPk(chatId: chatId));
+    return response;
   }
 }

@@ -1,4 +1,4 @@
-
+import 'dart:developer';
 
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
@@ -11,7 +11,7 @@ class ChatCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  
+    
     return Align(
       alignment: chat.senderId == UserMangementController.instance.user.userId
           ? Alignment.bottomRight

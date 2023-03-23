@@ -33,7 +33,7 @@ class AppHasuraConnect {
     }
   }
 
-  Future mutation({required String query}) async {
+  Future<Either<AppNetworkException,Map<String,dynamic>>> mutation({required String query}) async {
     try {
       final response = await _hasuraConnect.mutation(query);
       if (response['errors'] != null) {

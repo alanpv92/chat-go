@@ -22,11 +22,11 @@ class Chat {
       required this.senderId});
   factory Chat.fromJson(Map<String, dynamic> json) => _$ChatFromJson(json);
 
-  @override
-  bool operator ==(Object other) {
-    return (other is Chat) && other.chatId == chatId;
-  }
+  // @override
+  // bool operator ==(Object other) {
+  //   return (other is Chat) && other.chatId == chatId;
+  // }
 
-  @override
-  int get hashCode => Object.hashAll([chatId]);
+  // @override
+  // int get hashCode => Object.hashAll([chatId]);
 }
