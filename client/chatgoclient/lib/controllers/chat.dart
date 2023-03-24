@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
@@ -59,6 +59,8 @@ class ChatController extends BaseController {
     );
   }
 
+
+
   Future<Snapshot> setUpChatPreviewSnapShot() async {
     final respone = await _chatHasuraService.getChatPreviewSubscription(
         senderId: UserMangementController.instance.user.userId);
@@ -67,6 +69,8 @@ class ChatController extends BaseController {
     });
     return chatPreviewSnapShot;
   }
+
+
 
   Future setUpSenderReciverConnection({required String reciverId}) async {
     final response = await _chatHasuraService.getUserReceiverSnapShot(
@@ -104,73 +108,10 @@ class ChatController extends BaseController {
     userChats[reciverId]?.add(chat);
     if (chat.receiverId == UserMangementController.instance.user.userId) {
       _chatHasuraService.updateSingleChatStatus(chatId: chat.chatId);
-      // .then((value) {
-      // value.fold((l) {
-      //   CustomSnackBar.instance
-      //       .showError(errorText: TextManger.instance.randomError);
-      //   Get.back();
-      // }, (r) {
-      //   final chatId = r['update_chats_by_pk']['id'];
-      //   log(chatId);
-      // });
-      // });
+
     }
   }
 
-  // Future<Snapshot> setUpSenderReciverConnection(
-  //     {required String reciverId}) async {
-  //   final response = await _chatHasuraService.getUserReceiverSnapShot(
-  //       senderId: UserMangementController.instance.user.userId,
-  //       receiverId: reciverId);
-  //   response.fold((l) {
-  //     CustomSnackBar.instance
-  //         .showError(errorText: TextManger.instance.randomError);
-  //     Get.back();
-  //   }, (r) {
-  //     chatSnapShot = r;
-  //     r.listen((event) async {
-  //       if (event['data']['chats'] == []) {
-  //         return;
-  //       }
-  //       final chat = Chat.fromJson(event['data']['chats'][0]);
-  //       final lastChatId = userChats[reciverId]?.last.chatId;
-  //       if (lastChatId != null) {
-  //         if (lastChatId == chat.chatId) {
-  //           return;
-  //         }
-  //         userChats[reciverId]?.add(chat);
-  //         if (chat.receiverId == UserMangementController.instance.user.userId) {
-  //           final response = await _chatHasuraService.updateSingleChatStatus(
-  //               chatId: chat.chatId);
-  //           response.fold((l) {
-  //             //handle error case
-  //           }, (r) {
-  //             final chatId = r['update_chats_by_pk']['id'];
-  //             final index = userChats[reciverId]!.indexWhere(
-  //               (element) => element.chatId == chatId,
-  //             );
-  //             if (index != -1) {
-  //               Chat currentChat = userChats[reciverId]![index];
-  //               Chat updatedChat = Chat(
-  //                   chatId: chatId,
-  //                   isReceiverRead: true,
-  //                   message: "currentChat.message",
-  //                   receiverId: currentChat.receiverId,
-  //                   senderId: currentChat.senderId);
-  //               userChats[reciverId]![index] = updatedChat;
-
-  //               notifyListeners();
-  //             }
-  //           });
-  //         } else {
-  //           notifyListeners();
-  //         }
-  //       }
-  //     });
-  //   });
-
-  //   return chatSnapShot;
-  // }
 
   Future populateInitialChats({required String reciverId}) async {
     if (userChats[reciverId] != null) {

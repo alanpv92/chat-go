@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/chat.dart';
@@ -6,6 +6,7 @@ import 'package:chatgoclient/controllers/chat.dart';
 import 'package:chatgoclient/data/models/chat_preview.dart';
 import 'package:chatgoclient/ui/widgets/chat/chat_bottom.dart';
 import 'package:chatgoclient/ui/widgets/chat/chat_card.dart';
+import 'package:chatgoclient/ui/widgets/common/empty_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -86,27 +87,30 @@ class _ChatScreenState extends State<ChatScreen> {
                                         incommingChat: snapshot.data,
                                         reciverId:
                                             widget.chatPreview.receiverid);
-                                    Future.delayed(
-                                      Duration.zero,
-                                      () {
+                                   
                                         chatController.scrollDown();
-                                      },
-                                    );
-      
-                                    return ListView.builder(
-                                      controller:
-                                          chatController.scrollController,
-                                      itemBuilder: (context, index) {
-                                        return ChatCard(
-                                            chat: chatController.userChats[
-                                                widget.chatPreview
-                                                    .receiverid]![index]);
-                                      },
-                                      itemCount: chatController
-                                          .userChats[
-                                              widget.chatPreview.receiverid]
-                                          ?.length,
-                                    );
+                                
+
+                                    return chatController
+                                            .userChats[
+                                                widget.chatPreview.receiverid]!
+                                            .isEmpty
+                                        ? const EmptyBox()
+                                        : ListView.builder(
+                                            controller:
+                                                chatController.scrollController,
+                                            itemBuilder: (context, index) {
+                                              return ChatCard(
+                                                  chat: chatController
+                                                          .userChats[
+                                                      widget.chatPreview
+                                                          .receiverid]![index]);
+                                            },
+                                            itemCount: chatController
+                                                .userChats[widget
+                                                    .chatPreview.receiverid]
+                                                ?.length,
+                                          );
                                   }
                                   return const SizedBox();
                                 },

@@ -1,6 +1,4 @@
-import 'dart:developer';
 
-import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/chat.dart';
 import 'package:chatgoclient/manager/text.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +29,6 @@ class _ChatBottomState extends State<ChatBottom> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: SizeConfig.safeBlockVertical * 10,
       width: double.infinity,
       margin: const EdgeInsets.only(right: 10, left: 10),
       padding: const EdgeInsets.all(10),

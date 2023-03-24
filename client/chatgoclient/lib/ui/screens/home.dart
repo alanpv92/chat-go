@@ -1,5 +1,3 @@
-
-
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/authentication.dart';
 import 'package:chatgoclient/controllers/chat.dart';
@@ -7,6 +5,7 @@ import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/text.dart';
 import 'package:chatgoclient/ui/screens/chat.dart';
 import 'package:chatgoclient/ui/widgets/common/empty_screen.dart';
+import 'package:chatgoclient/ui/widgets/loaders/chat_card_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/route_manager.dart';
@@ -64,7 +63,7 @@ class HomeScreen extends StatelessWidget {
                             snapshot.hasData) {
                           chatController.populateCurrentChatPreviews(
                               data: snapshot.data);
-                              
+
                           return chatController.currentChatPreviews.isEmpty
                               ? const Center(
                                   child: EmptyBox(),
@@ -132,15 +131,11 @@ class HomeScreen extends StatelessWidget {
                                   },
                                 );
                         }
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
+                        return const ChatCardShimmerLoader();
                       },
                     );
                   }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const ChatCardShimmerLoader();
                 },
               );
             },

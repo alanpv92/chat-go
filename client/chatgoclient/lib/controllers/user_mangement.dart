@@ -21,7 +21,7 @@ class UserMangementController {
   checkAuthStatus() async {
     if (_appToken != null) {
       _currentuser = await _userBoxStorage.getUser();
-
+        
       Get.offAllNamed(Routes.homeScreen);
     } else {
       Get.offAllNamed(Routes.authScreen);
