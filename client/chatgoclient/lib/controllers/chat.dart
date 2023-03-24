@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/models/chat.dart';
@@ -153,6 +155,7 @@ class ChatController extends BaseController {
   }
 
   populateCurrentChatPreviews({required Map<String, dynamic> data}) async {
+    log(data.toString());
     final List chats = data['data']['chats'];
     currentChatPreviews.clear();
     for (var element in chats) {
