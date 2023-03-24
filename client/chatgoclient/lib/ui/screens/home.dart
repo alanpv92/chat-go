@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/authentication.dart';
 import 'package:chatgoclient/controllers/chat.dart';
@@ -52,18 +54,16 @@ class HomeScreen extends StatelessWidget {
               final chatController = ref.read(chatProvider);
               return FutureBuilder(
                 future: chatController.setUpChatPreviewSnapShot(),
-                builder: (context, data) {
-                  if (data.connectionState == ConnectionState.done &&
-                      data.hasData) {
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
                     return StreamBuilder(
-                      stream: data.data,
+                      stream: chatController.chatPreviewSnapShot,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                                 ConnectionState.active &&
                             snapshot.hasData) {
                           chatController.populateCurrentChatPreviews(
                               data: snapshot.data);
-
                           return chatController.currentChatPreviews.isEmpty
                               ? const Center(
                                   child: EmptyBox(),

@@ -32,7 +32,6 @@ class ChatHasuraService {
 
   Future updateChatPreview(
       {required String senderId, required String receiverId}) async {
-
     final response = await _appHasuraConnect.mutation(
         query: HasuraMutation.updateReadStatus(
             receiverId: receiverId, senderId: senderId));
@@ -67,7 +66,6 @@ class ChatHasuraService {
 
   Future<HasuraResponse> updateSingleChatStatus(
       {required String chatId}) async {
-
     final response = await _appHasuraConnect.mutation(
         query: HasuraMutation.updateSingleChatByPk(chatId: chatId));
     return response;

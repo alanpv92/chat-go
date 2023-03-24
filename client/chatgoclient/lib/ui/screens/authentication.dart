@@ -1,6 +1,6 @@
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/authentication.dart';
-import 'package:chatgoclient/controllers/theme.dart';
+
 import 'package:chatgoclient/ui/widgets/authentication/auth_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -1,5 +1,3 @@
-
-
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/models/chat.dart';
@@ -59,18 +57,13 @@ class ChatController extends BaseController {
     );
   }
 
-
-
-  Future<Snapshot> setUpChatPreviewSnapShot() async {
+  Future setUpChatPreviewSnapShot() async {
     final respone = await _chatHasuraService.getChatPreviewSubscription(
         senderId: UserMangementController.instance.user.userId);
     respone.fold((l) {}, (r) {
       chatPreviewSnapShot = r;
     });
-    return chatPreviewSnapShot;
   }
-
-
 
   Future setUpSenderReciverConnection({required String reciverId}) async {
     final response = await _chatHasuraService.getUserReceiverSnapShot(
@@ -108,10 +101,8 @@ class ChatController extends BaseController {
     userChats[reciverId]?.add(chat);
     if (chat.receiverId == UserMangementController.instance.user.userId) {
       _chatHasuraService.updateSingleChatStatus(chatId: chat.chatId);
-
     }
   }
-
 
   Future populateInitialChats({required String reciverId}) async {
     if (userChats[reciverId] != null) {
@@ -223,5 +214,10 @@ class ChatController extends BaseController {
 
   closeChatSnapShot() {
     chatSnapShot.close();
+  }
+
+  chatControllerDispose() {
+    userChats.clear();
+    currentChatPreviews.clear();
   }
 }

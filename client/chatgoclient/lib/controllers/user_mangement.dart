@@ -21,10 +21,10 @@ class UserMangementController {
   checkAuthStatus() async {
     if (_appToken != null) {
       _currentuser = await _userBoxStorage.getUser();
-        
-      Get.offAllNamed(Routes.homeScreen);
+      return true;
     } else {
-      Get.offAllNamed(Routes.authScreen);
+      return false;
+     
     }
   }
 
@@ -39,7 +39,6 @@ class UserMangementController {
   initToken() async {
     final tokenFromStorage = await _userBoxStorage.getToken() as String?;
     _appToken = tokenFromStorage;
-   
   }
 
   storeToken({required String token}) async {
