@@ -84,6 +84,11 @@ class ChatController extends BaseController {
   handleIncomingChat(
       {required Map<String, dynamic> incommingChat,
       required String reciverId}) {
+    if (incommingChat == {} ||
+        incommingChat['data'] == {} ||
+        incommingChat['data']['chats'].isEmpty) {
+      return;
+    }
     final chat = Chat.fromJson(incommingChat['data']['chats'][0]);
     if (chat.isReceiverRead) {
       final index = userChats[reciverId]?.indexOf(chat);
