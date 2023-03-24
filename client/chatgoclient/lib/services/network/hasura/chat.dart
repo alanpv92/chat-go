@@ -36,11 +36,6 @@ class ChatHasuraService {
     final response = await _appHasuraConnect.mutation(
         query: HasuraMutation.updateReadStatus(
             receiverId: receiverId, senderId: senderId));
-    response.fold((l) {
-      log(l.message.toString());
-    }, (r) {
-      log(r.toString());
-    });
     return response;
   }
 

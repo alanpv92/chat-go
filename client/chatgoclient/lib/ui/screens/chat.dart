@@ -75,24 +75,40 @@ class _ChatScreenState extends State<ChatScreen> {
                               reciverId: widget.chatPreview.receiverid),
                           builder: (context, data) {
                             if (data.connectionState == ConnectionState.done) {
-                              return Consumer(
-                                builder: (context, ref, child) {
-                                  ref.watch(chatProvider);
-                                  log('re rendering %%%%%%%');
-                                  chatController.scrollDown();
-                                  return ListView.builder(
-                                 
-                                    controller: chatController.scrollController,
-                                    itemBuilder: (context, index) {
-                                      return ChatCard(
-                                          chat: chatController.userChats[widget
-                                              .chatPreview.receiverid]![index]);
-                                    },
-                                    itemCount: chatController
-                                        .userChats[
-                                            widget.chatPreview.receiverid]
-                                        ?.length,
-                                  );
+                              return StreamBuilder(
+                                stream: chatController.chatSnapShot,
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                          ConnectionState.active &&
+                                      snapshot.hasData &&
+                                      !snapshot.hasError) {
+                                    chatController.handleIncomingChat(
+                                        incommingChat: snapshot.data,
+                                        reciverId:
+                                            widget.chatPreview.receiverid);
+                                    Future.delayed(
+                                      Duration.zero,
+                                      () {
+                                        chatController.scrollDown();
+                                      },
+                                    );
+      
+                                    return ListView.builder(
+                                      controller:
+                                          chatController.scrollController,
+                                      itemBuilder: (context, index) {
+                                        return ChatCard(
+                                            chat: chatController.userChats[
+                                                widget.chatPreview
+                                                    .receiverid]![index]);
+                                      },
+                                      itemCount: chatController
+                                          .userChats[
+                                              widget.chatPreview.receiverid]
+                                          ?.length,
+                                    );
+                                  }
+                                  return const SizedBox();
                                 },
                               );
                             }
