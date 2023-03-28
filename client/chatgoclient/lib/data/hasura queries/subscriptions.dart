@@ -41,4 +41,19 @@ subscription getChatPreview {
 }
 ''';
 //////////////////////////////////////////////////////////////////////////////////
+
+  static String getSingleUserOnlineSnap({required String userId}) => '''
+
+  subscription watchOnlineUser {
+  useronlinestatus(where: {user_id: {_eq: "$userId"}}) {
+    user_id
+  }
+}
+
+
+
+
+''';
+
+///////////////////////////////////////////////////////////////////////////////////////
 }

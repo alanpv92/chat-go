@@ -34,10 +34,11 @@ class HasuraMutation {
       `;
   }
 
-   
-
-
-  static insertChatPreviewForUser(messageId:String,user1Id:String,user2Id:String){
+  static insertChatPreviewForUser(
+    messageId: String,
+    user1Id: String,
+    user2Id: String
+  ) {
     return `
       
     mutation updateChatPreview {
@@ -50,7 +51,7 @@ class HasuraMutation {
     `;
   }
 
-  static updateChatPreviewForUser(chatPreviewId:String,messageId:String){
+  static updateChatPreviewForUser(chatPreviewId: String, messageId: String) {
     return `
     
     mutation updateChatPreview {
@@ -64,6 +65,18 @@ class HasuraMutation {
     `;
   }
 
+  static clearAllUserStatus() {
+    return `
+    
+    mutation clearAllStatus {
+      delete_useronlinestatus(where: {}) {
+        affected_rows
+      }
+    }
+      
+
+    `;
+  }
 }
 
 export default HasuraMutation;
