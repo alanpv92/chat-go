@@ -97,7 +97,7 @@ class ChatController extends BaseController {
       if (index != null && index != -1) {
         userChats[reciverId]?[index] = chat;
       }
-
+      updateChatReadStatus(receiverid: reciverId);
       return;
     }
     final lastChatId = userChats[reciverId]?.last.chatId;
@@ -108,6 +108,21 @@ class ChatController extends BaseController {
     userChats[reciverId]?.add(chat);
     if (chat.receiverId == UserMangementController.instance.user.userId) {
       _chatHasuraService.updateSingleChatStatus(chatId: chat.chatId);
+    }
+  }
+
+  updateChatReadStatus({required String receiverid}) {
+    if (userChats[receiverid] == null) {
+      return;
+    }
+    for (int i = 0; i < userChats[receiverid]!.length; i++) {
+      final currentChat = userChats[receiverid]![i];
+      userChats[receiverid]![i] = Chat(
+          chatId: currentChat.chatId,
+          isReceiverRead: true,
+          message: currentChat.message,
+          receiverId: currentChat.receiverId,
+          senderId: currentChat.senderId);
     }
   }
 

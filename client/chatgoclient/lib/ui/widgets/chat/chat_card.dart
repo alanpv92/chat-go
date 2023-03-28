@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/models/chat.dart';
@@ -7,8 +5,8 @@ import 'package:flutter/material.dart';
 
 class ChatCard extends StatelessWidget {
   final Chat chat;
-  final bool isChatRead;
-  const ChatCard({super.key, required this.chat,this.isChatRead=false});
+
+  const ChatCard({super.key, required this.chat});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +18,7 @@ class ChatCard extends StatelessWidget {
         width: SizeConfig.safeBlockHorizontal * 35,
         child: Card(
           color: chat.senderId == UserMangementController.instance.user.userId
-              ? chat.isReceiverRead||isChatRead
+              ? chat.isReceiverRead
                   ? Colors.green
                   : Colors.grey
               : Colors.blue,
