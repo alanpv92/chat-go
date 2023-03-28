@@ -6,7 +6,14 @@ class HasuraQuery {
     email
     id
     user_name
+      chatpreviews {
+      id
+    }
+    chatpreviewsBySenderId {
+      id
+    }
   }
+  
 }
 """;
 

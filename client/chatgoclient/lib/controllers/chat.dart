@@ -62,7 +62,10 @@ class ChatController extends BaseController {
   Future setUpChatPreviewSnapShot() async {
     final respone = await _chatHasuraService.getChatPreviewSubscription(
         senderId: UserMangementController.instance.user.userId);
-    respone.fold((l) {}, (r) {
+
+    respone.fold((l) {
+      log(l.toString());
+    }, (r) {
       chatPreviewSnapShot = r;
     });
   }
@@ -155,21 +158,32 @@ class ChatController extends BaseController {
   }
 
   populateCurrentChatPreviews({required Map<String, dynamic> data}) async {
-    log(data.toString());
-    final List chats = data['data']['chats'];
+    final List chats = data['data']['chatpreview'];
     currentChatPreviews.clear();
     for (var element in chats) {
-      currentChatPreviews.add(
-        ChatPreview(
-            isLastMessageRead: element['userBySenderId']['chatsBySenderId'][0]
-                ['is_receiver_read'],
-            receiverName: element['userBySenderId']['chatsBySenderId'][0]
-                ['userBySenderId']['user_name'],
-            receiverid: element['userBySenderId']['chatsBySenderId'][0]
-                ['userBySenderId']['id'],
-            lastMessage: element['userBySenderId']['chatsBySenderId'][0]
-                ['message']),
-      );
+      final chatDetails = element['chat'];
+
+      final String lastMessage = chatDetails['message'];
+      final String receiverId = chatDetails['receiver_id'];
+      final String senderId = chatDetails['sender_id'];
+      final bool isLastMessageRead = chatDetails['is_receiver_read'];
+      late final String userName;
+      late final String chatPreviewReceiverId;
+
+      if (receiverId == UserMangementController.instance.user.userId) {
+        userName = chatDetails['userBySenderId']['user_name'];
+        chatPreviewReceiverId = senderId;
+      } else {
+        userName = chatDetails['user']['user_name'];
+        chatPreviewReceiverId = receiverId;
+      }
+      currentChatPreviews.add(ChatPreview(
+        id: element['id'],
+        isLastMessageRead: isLastMessageRead,
+        receiverName: userName,
+        receiverid: chatPreviewReceiverId,
+        lastMessage: lastMessage,
+      ));
     }
   }
 
@@ -189,6 +203,8 @@ class ChatController extends BaseController {
         chatData: ChatRequest(
                 message: message,
                 receiverId: receiverId,
+                chatPreviewId:
+                    getChatPreview(receiverId: receiverId)?.id,
                 senderId: UserMangementController.instance.user.userId)
             .getRequestData());
 
@@ -213,6 +229,17 @@ class ChatController extends BaseController {
     _chatHasuraService.updateChatPreview(
         receiverId: UserMangementController.instance.user.userId,
         senderId: receiverId);
+  }
+
+  ChatPreview? getChatPreview({required String receiverId}) {
+    final chatPreview = currentChatPreviews
+        .where((element) => element.receiverid == receiverId)
+        .toList();
+    if (chatPreview.isNotEmpty) {
+      
+      return chatPreview[0];
+    }
+    return null;
   }
 
   closeChatSnapShot() {

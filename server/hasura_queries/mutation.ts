@@ -33,6 +33,37 @@ class HasuraMutation {
 
       `;
   }
+
+   
+
+
+  static insertChatPreviewForUser(messageId:String,user1Id:String,user2Id:String){
+    return `
+      
+    mutation updateChatPreview {
+      insert_chatpreview_one(object: {message_id: "${messageId}", user_1_id: "${user1Id}", user_2_id: "${user2Id}"}) {
+        id
+      }
+    }
+    
+      
+    `;
+  }
+
+  static updateChatPreviewForUser(chatPreviewId:String,messageId:String){
+    return `
+    
+    mutation updateChatPreview {
+      update_chatpreview(where: {id: {_eq: "${chatPreviewId}"}}, _set: {message_id: "${messageId}"}) {
+        affected_rows
+      }
+    }
+    
+    
+    
+    `;
+  }
+
 }
 
 export default HasuraMutation;

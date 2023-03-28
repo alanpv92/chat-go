@@ -22,23 +22,23 @@ subscription watchUserSenderChat {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
   static getChatPreviewSubScription({required String senderId}) => '''
-subscription MyQuery {
-  chats(where: {receiver_id: {_eq: "$senderId"}}, distinct_on: sender_id) {
-    userBySenderId {
-      chatsBySenderId(limit: 1, order_by: {created_at: desc}) {
-        message
-        is_receiver_read
-        userBySenderId {
-          user_name
-          id
-        }
+subscription getChatPreview {
+  chatpreview(where: {_or: [{user_1_id: {_eq: "$senderId"}}, {user_2_id: {_eq: "$senderId"}}]}) {
+    id
+    chat {
+      message
+      receiver_id
+      sender_id
+      is_receiver_read
+      user {
+        user_name
+      }
+      userBySenderId {
+        user_name
       }
     }
   }
 }
-
-
-
 ''';
 //////////////////////////////////////////////////////////////////////////////////
 }

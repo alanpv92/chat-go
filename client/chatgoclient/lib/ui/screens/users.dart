@@ -84,8 +84,8 @@ class _UsersScreenState extends State<UsersScreen> {
               },
             ),
             separatorBuilder: (context, index) {
-              return const Divider(
-                thickness: 2,
+              return const SizedBox(
+                height: 5,
               );
             },
           ))

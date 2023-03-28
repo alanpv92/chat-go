@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:math';
 
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/authentication.dart';
@@ -71,57 +71,40 @@ class HomeScreen extends StatelessWidget {
                               : ListView.separated(
                                   itemBuilder: (context, index) {
                                     return ListTile(
-                                        onTap: () {
-                                          Get.to(
-                                            () => ChatScreen(
-                                              chatPreview: chatController
-                                                  .currentChatPreviews[index],
-                                            ),
-                                          );
-                                        },
-                                        leading: CircleAvatar(
-                                          child: Text(chatController
-                                              .currentChatPreviews[index]
-                                              .receiverName[0]),
-                                        ),
-                                        title: Text(
+                                      onTap: () {
+                                        Get.to(
+                                          () => ChatScreen(
+                                            chatPreview: chatController
+                                                .currentChatPreviews[index],
+                                          ),
+                                        );
+                                      },
+                                      leading: CircleAvatar(
+                                        child: Text(chatController
+                                            .currentChatPreviews[index]
+                                            .receiverName[0]),
+                                      ),
+                                      title: Text(
+                                        chatController
+                                            .currentChatPreviews[index]
+                                            .receiverName,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall!
+                                            .copyWith(color: Colors.black),
+                                      ),
+                                      subtitle: Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: Text(
                                           chatController
                                               .currentChatPreviews[index]
-                                              .receiverName,
+                                              .lastMessage,
                                           style: Theme.of(context)
                                               .textTheme
-                                              .headlineSmall!
-                                              .copyWith(color: Colors.black),
+                                              .titleMedium,
                                         ),
-                                        subtitle: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 10),
-                                          child: Text(
-                                            chatController
-                                                .currentChatPreviews[index]
-                                                .lastMessage,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium,
-                                          ),
-                                        ),
-                                        trailing: SizedBox(
-                                            width:
-                                                SizeConfig.safeBlockHorizontal *
-                                                    20,
-                                            child: Align(
-                                              alignment: Alignment.bottomRight,
-                                              child: Icon(
-                                                Icons.check,
-                                                color: chatController
-                                                        .currentChatPreviews[
-                                                            index]
-                                                        .isLastMessageRead
-                                                    ? Colors.green
-                                                    : null,
-                                                size: 20,
-                                              ),
-                                            )));
+                                      ),
+                                    );
                                   },
                                   itemCount:
                                       chatController.currentChatPreviews.length,
