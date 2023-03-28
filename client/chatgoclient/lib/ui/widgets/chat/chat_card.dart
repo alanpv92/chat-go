@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 class ChatCard extends StatelessWidget {
   final Chat chat;
+
   const ChatCard({super.key, required this.chat});
 
   @override
@@ -17,7 +18,9 @@ class ChatCard extends StatelessWidget {
         width: SizeConfig.safeBlockHorizontal * 35,
         child: Card(
           color: chat.senderId == UserMangementController.instance.user.userId
-              ? Colors.blueGrey
+              ? chat.isReceiverRead
+                  ? Colors.green
+                  : Colors.grey
               : Colors.blue,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
@@ -29,14 +32,6 @@ class ChatCard extends StatelessWidget {
                     chat.message,
                   ),
                 ),
-                Visibility(
-                  visible: chat.senderId ==
-                      UserMangementController.instance.user.userId,
-                  child: Icon(
-                    Icons.check,
-                    color: chat.isReceiverRead ? Colors.green : null,
-                  ),
-                )
               ],
             ),
           ),

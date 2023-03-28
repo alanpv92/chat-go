@@ -14,4 +14,5 @@ class ApiManger {
   static String graphqlUrl = AppConfig.graphQLURL;
   static String loginUrl = 'auth/login';
   static String registerUrl = 'auth/register';
+  static String sendChat = 'chat/sendchat';
 }

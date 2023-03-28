@@ -1,0 +1,18 @@
+table:
+  name: chats
+  schema: public
+object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: receiver_id
+  - name: userBySenderId
+    using:
+      foreign_key_constraint_on: sender_id
+array_relationships:
+  - name: chatpreviews
+    using:
+      foreign_key_constraint_on:
+        column: message_id
+        table:
+          name: chatpreview
+          schema: public

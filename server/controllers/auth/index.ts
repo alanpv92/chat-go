@@ -17,7 +17,7 @@ const getUserDetailsByEmail = async (email: String, headers: {}) => {
   try {
     let response = await HasuraHelper.getInstance().query(
       HasuraQuery.findUserByEmailQuery(email),
-      headers
+     
     );
 
     let user: Array<{
@@ -37,8 +37,6 @@ const getUserDetailsByEmail = async (email: String, headers: {}) => {
 const registerUser = async (req: Request, res: Response) => {
   try {
     let { email, password, user_name } = req.body;
-    req.headers["x-hasura-admin-secret"] =
-      process.env.HASURA_GRAPHQL_ADMIN_SECRET;
     let user = await getUserDetailsByEmail(email, req.headers);
     if (user.length != 0) {
       throw new Error("user alredy registred");
@@ -49,7 +47,7 @@ const registerUser = async (req: Request, res: Response) => {
       .toString(`hex`);
     let response = await HasuraHelper.getInstance().query(
       HasuraMutation.addUser(email, hash, user_name, salt),
-      req.headers
+      
     );
     let id = response["insert_users_one"]["id"];
     let tokenData = { id, email };
@@ -74,8 +72,6 @@ const registerUser = async (req: Request, res: Response) => {
 const loginUser = async (req: Request, res: Response) => {
   try {
     let { email, password } = req.body;
-    req.headers["x-hasura-admin-secret"] =
-      process.env.HASURA_GRAPHQL_ADMIN_SECRET;
     let user = await getUserDetailsByEmail(email, req.headers);
 
     if (user.length == 0) {
@@ -111,6 +107,7 @@ const loginUser = async (req: Request, res: Response) => {
 function verifyWebToken(req: Request, res: Response, next: NextFunction) {
   try {
     const token = req.header("authorization")?.split(" ")[1];
+   
     if (token != undefined) {
       let tokenStatus = jwt.verify(token, process.env.TOKEN_KEY as jwt.Secret);
       if (tokenStatus) {

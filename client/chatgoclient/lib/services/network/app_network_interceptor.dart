@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/manager/api.dart';
@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 class AppNetworkInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) async {
-    log(response.requestOptions.path.toString());
+
     if (response.requestOptions.path.contains(ApiManger.loginUrl) ||
         response.requestOptions.path.contains(ApiManger.registerUrl)) {
       Map<String, dynamic> data = response.data ?? {};
@@ -16,5 +16,14 @@ class AppNetworkInterceptor extends Interceptor {
       }
     }
     super.onResponse(response, handler);
+  }
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    final token = UserMangementController.instance.token;
+    if(token!=null){
+    options.headers["authorization"] = "Bearer $token";
+    }
+    super.onRequest(options, handler);
   }
 }

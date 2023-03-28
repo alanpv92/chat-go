@@ -1,3 +1,32 @@
 table:
   name: users
   schema: public
+array_relationships:
+  - name: chatpreviews
+    using:
+      foreign_key_constraint_on:
+        column: user_2_id
+        table:
+          name: chatpreview
+          schema: public
+  - name: chatpreviewsBySenderId
+    using:
+      foreign_key_constraint_on:
+        column: user_1_id
+        table:
+          name: chatpreview
+          schema: public
+  - name: chats
+    using:
+      foreign_key_constraint_on:
+        column: receiver_id
+        table:
+          name: chats
+          schema: public
+  - name: chatsBySenderId
+    using:
+      foreign_key_constraint_on:
+        column: sender_id
+        table:
+          name: chats
+          schema: public

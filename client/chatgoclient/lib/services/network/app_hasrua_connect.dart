@@ -1,4 +1,6 @@
+import 'dart:developer';
 
+import 'package:chatgoclient/data/custom%20types/custom_types.dart';
 import 'package:chatgoclient/data/exceptions/app_newtork.dart';
 import 'package:chatgoclient/manager/api.dart';
 import 'package:chatgoclient/manager/text.dart';
@@ -14,7 +16,7 @@ class AppHasuraConnect {
 
   final HasuraConnect _hasuraConnect = HasuraConnect(ApiManger.graphqlUrl,
       interceptors: [AppHasuraInterceptor()]);
-  
+
   Future<Either<AppNetworkException, Map<String, dynamic>>> query(
       {required String query}) async {
     try {
@@ -31,15 +33,26 @@ class AppHasuraConnect {
     }
   }
 
-  Future mutation({required String query}) async {
+  Future<Either<AppNetworkException,Map<String,dynamic>>> mutation({required String query}) async {
     try {
-      final response = await _hasuraConnect.query(query);
+      final response = await _hasuraConnect.mutation(query);
       if (response['errors'] != null) {
         return left(AppNetworkException(
             message: TextManger.instance.randomError, status: 400));
       } else {
         return right(response['data']);
       }
+    } catch (e) {
+      return left(AppNetworkException(
+          message: TextManger.instance.randomError, status: 400));
+    }
+  }
+
+  Future<HasuraSubscriptionResponse> subscription(
+      {required String query}) async {
+    try {
+      final response = await _hasuraConnect.subscription(query);
+      return right(response);
     } catch (e) {
       return left(AppNetworkException(
           message: TextManger.instance.randomError, status: 400));

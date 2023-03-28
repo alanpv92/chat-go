@@ -5,6 +5,7 @@ const router =express.Router();
 
 
 router.use('/',(req:Request,res:Response,next:NextFunction)=>{
+
   authController.verifyWebToken(req,res,next);
 });
 

@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:chatgoclient/data/models/user.dart';
 import 'package:chatgoclient/utils/stroage/user_box.dart';
@@ -19,12 +20,11 @@ class UserMangementController {
 
   checkAuthStatus() async {
     if (_appToken != null) {
-        _currentuser = await _userBoxStorage.getUser();
-
-      Get.offAllNamed(Routes.homeScreen);
+      _currentuser = await _userBoxStorage.getUser();
+      return true;
     } else {
-  
-      Get.offAllNamed(Routes.authScreen);
+      return false;
+     
     }
   }
 
