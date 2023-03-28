@@ -1,5 +1,3 @@
-
-
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/chat.dart';
 
@@ -7,6 +5,7 @@ import 'package:chatgoclient/data/models/chat_preview.dart';
 import 'package:chatgoclient/ui/widgets/chat/chat_bottom.dart';
 import 'package:chatgoclient/ui/widgets/chat/chat_card.dart';
 import 'package:chatgoclient/ui/widgets/common/empty_screen.dart';
+import 'package:chatgoclient/ui/widgets/loaders/chat_screen_shimmer_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -87,9 +86,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                         incommingChat: snapshot.data,
                                         reciverId:
                                             widget.chatPreview.receiverid);
-                                   
-                                        chatController.scrollDown();
-                                
+
+                                    chatController.scrollDown();
 
                                     return chatController
                                             .userChats[
@@ -112,13 +110,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 ?.length,
                                           );
                                   }
-                                  return const SizedBox();
+                                  return const ChatScreenShimmerLoader();
                                 },
                               );
                             }
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
+                            return const ChatScreenShimmerLoader();
                           })),
                 ),
                 ChatBottom(
