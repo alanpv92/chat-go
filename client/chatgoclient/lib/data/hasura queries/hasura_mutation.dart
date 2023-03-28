@@ -3,8 +3,8 @@ class HasuraMutation {
 
   static String updateReadStatus({required String senderId,required String receiverId}) => '''
 
-mutation updateIsReadStatus {
-  update_chats(where: {receiver_id: {_eq: "$receiverId"}, is_receiver_read: {_eq: false}, sender_id: {_eq: "$senderId"}}, _set: {is_receiver_read: true}) {
+mutation updateChatReadStatus {
+  update_chats(where: {receiver_id: {_eq: "$receiverId"}, sender_id: {_eq: "$senderId"}, is_receiver_read: {_eq: false}}, _set: {is_receiver_read: true}) {
     affected_rows
   }
 }

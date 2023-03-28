@@ -7,11 +7,11 @@ import 'package:flutter/material.dart';
 
 class ChatCard extends StatelessWidget {
   final Chat chat;
-  const ChatCard({super.key, required this.chat});
+  final bool isChatRead;
+  const ChatCard({super.key, required this.chat,this.isChatRead=false});
 
   @override
   Widget build(BuildContext context) {
-    
     return Align(
       alignment: chat.senderId == UserMangementController.instance.user.userId
           ? Alignment.bottomRight
@@ -20,7 +20,7 @@ class ChatCard extends StatelessWidget {
         width: SizeConfig.safeBlockHorizontal * 35,
         child: Card(
           color: chat.senderId == UserMangementController.instance.user.userId
-              ? chat.isReceiverRead
+              ? chat.isReceiverRead||isChatRead
                   ? Colors.green
                   : Colors.grey
               : Colors.blue,

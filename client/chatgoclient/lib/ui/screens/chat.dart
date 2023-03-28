@@ -99,6 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                                 chatController.scrollController,
                                             itemBuilder: (context, index) {
                                               return ChatCard(
+                                                isChatRead: chatController.userChats[widget.chatPreview.receiverid]!.last.isReceiverRead,
                                                   chat: chatController
                                                           .userChats[
                                                       widget.chatPreview

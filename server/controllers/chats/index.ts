@@ -13,9 +13,9 @@ const sendChat = async (req: Request, res: Response) => {
     let messageId = response["insert_chats"]["returning"][0]["id"];
 
     if (chat_preview_id) {
-    console.log(chat_preview_id);
-    let reponseq= await HasuraHelper.getInstance().query(HasuraMutation.updateChatPreviewForUser(chat_preview_id,messageId));
-    console.log(reponseq);
+    
+   await HasuraHelper.getInstance().query(HasuraMutation.updateChatPreviewForUser(chat_preview_id,messageId));
+ 
     } else {
       await HasuraHelper.getInstance().query(
         HasuraMutation.insertChatPreviewForUser(

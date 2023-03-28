@@ -97,12 +97,14 @@ class ChatController extends BaseController {
       if (index != null && index != -1) {
         userChats[reciverId]?[index] = chat;
       }
+
       return;
     }
     final lastChatId = userChats[reciverId]?.last.chatId;
     if (lastChatId != null && lastChatId == chat.chatId) {
       return;
     }
+
     userChats[reciverId]?.add(chat);
     if (chat.receiverId == UserMangementController.instance.user.userId) {
       _chatHasuraService.updateSingleChatStatus(chatId: chat.chatId);
@@ -162,14 +164,12 @@ class ChatController extends BaseController {
     currentChatPreviews.clear();
     for (var element in chats) {
       final chatDetails = element['chat'];
-
       final String lastMessage = chatDetails['message'];
       final String receiverId = chatDetails['receiver_id'];
       final String senderId = chatDetails['sender_id'];
       final bool isLastMessageRead = chatDetails['is_receiver_read'];
       late final String userName;
       late final String chatPreviewReceiverId;
-
       if (receiverId == UserMangementController.instance.user.userId) {
         userName = chatDetails['userBySenderId']['user_name'];
         chatPreviewReceiverId = senderId;
@@ -203,8 +203,7 @@ class ChatController extends BaseController {
         chatData: ChatRequest(
                 message: message,
                 receiverId: receiverId,
-                chatPreviewId:
-                    getChatPreview(receiverId: receiverId)?.id,
+                chatPreviewId: getChatPreview(receiverId: receiverId)?.id,
                 senderId: UserMangementController.instance.user.userId)
             .getRequestData());
 
@@ -236,7 +235,6 @@ class ChatController extends BaseController {
         .where((element) => element.receiverid == receiverId)
         .toList();
     if (chatPreview.isNotEmpty) {
-      
       return chatPreview[0];
     }
     return null;
