@@ -44,6 +44,7 @@ class _UsersScreenState extends State<UsersScreen> {
               child: PagedListView.separated(
             pagingController: SearchController.instance.pageController,
             builderDelegate: PagedChildBuilderDelegate<User>(
+              
               firstPageErrorIndicatorBuilder: (context) {
                 return Center(
                   child: Column(
@@ -83,6 +84,7 @@ class _UsersScreenState extends State<UsersScreen> {
                 );
               },
             ),
+            
             separatorBuilder: (context, index) {
               return const SizedBox(
                 height: 5,

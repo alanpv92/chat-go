@@ -33,7 +33,7 @@ class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        height: SizeConfig.blockSizeVertical * 7,
+     
         width: double.infinity,
         margin: EdgeInsets.only(
             left: SizeConfig.safeBlockHorizontal * 2,
