@@ -7,9 +7,9 @@ import 'package:hasura_connect/hasura_connect.dart';
 class OnlineStatusAvatar extends StatefulWidget {
   final String userId;
   final String userName;
-
+  final bool fromHomePage;
   const OnlineStatusAvatar(
-      {super.key, required this.userName, required this.userId});
+      {super.key, required this.userName, required this.userId,this.fromHomePage=false});
 
   @override
   State<OnlineStatusAvatar> createState() => _OnlineStatusAvatarState();
@@ -22,7 +22,6 @@ class _OnlineStatusAvatarState extends State<OnlineStatusAvatar> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-        
       _snapshot = await UserMangementController.instance
           .getSingleUserStatusSnapSnot(userId: widget.userId);
       setState(() {
@@ -32,11 +31,13 @@ class _OnlineStatusAvatarState extends State<OnlineStatusAvatar> {
     super.initState();
   }
 
-
-
   @override
   void dispose() {
-    _snapshot?.close();
+    // if(!widget.fromHomePage){
+        
+    //    _snapshot?.close();
+    // }
+   
     super.dispose();
   }
 

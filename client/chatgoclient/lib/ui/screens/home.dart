@@ -36,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     }
     super.didChangeAppLifecycleState(state);
   }
+  
 
   @override
   void dispose() {
@@ -114,6 +115,7 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                         userName: chatController
                                             .currentChatPreviews[index]
                                             .receiverName,
+                                            
                                       ),
                                       title: Text(
                                         chatController
