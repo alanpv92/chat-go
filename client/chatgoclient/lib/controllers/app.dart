@@ -38,5 +38,6 @@ class AppController extends BaseController {
     await UserBoxStorage.instance.deleteToken();
     await UserMangementController.instance.userMangementControllerDisposer();
     await ChatController.instance.chatControllerDispose();
+    
   }
 }

@@ -62,7 +62,6 @@ class UserMangementController {
 
   Future<Snapshot?> getSingleUserStatusSnapSnot(
       {required String userId}) async {
-
     final response =
         await _usersHasuraService.watchSingleUserOnlineStatus(userId: userId);
     return response.fold((l) {
@@ -72,7 +71,8 @@ class UserMangementController {
     });
   }
 
-  userMangementControllerDisposer() {
+  userMangementControllerDisposer()  {
     _appToken = null;
+    
   }
 }

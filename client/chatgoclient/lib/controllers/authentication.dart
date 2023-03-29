@@ -108,6 +108,7 @@ class AuthenticationController extends BaseController {
 
   logoutUser() async {
     _authMode = AuthMode.login;
+    await UserMangementController.instance.removeUserOnlineStatus();
     AppController.instance.disposeAppOnLogOut();
     Get.offAllNamed(Routes.authScreen);
   }
