@@ -1,0 +1,13 @@
+table:
+  name: chatpreview
+  schema: public
+object_relationships:
+  - name: chat
+    using:
+      foreign_key_constraint_on: message_id
+  - name: user
+    using:
+      foreign_key_constraint_on: user_2_id
+  - name: userBySenderId
+    using:
+      foreign_key_constraint_on: user_1_id

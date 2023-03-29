@@ -255,9 +255,16 @@ class ChatController extends BaseController {
     return null;
   }
 
+
+  
+
+
+
   closeChatSnapShot() {
     chatSnapShot.close();
   }
+
+
 
   chatControllerDispose() {
     userChats.clear();

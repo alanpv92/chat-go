@@ -5,6 +5,7 @@ import 'package:chatgoclient/data/models/chat_preview.dart';
 import 'package:chatgoclient/ui/widgets/chat/chat_bottom.dart';
 import 'package:chatgoclient/ui/widgets/chat/chat_card.dart';
 import 'package:chatgoclient/ui/widgets/common/empty_screen.dart';
+import 'package:chatgoclient/ui/widgets/common/online_status_avatar.dart';
 import 'package:chatgoclient/ui/widgets/loaders/chat_screen_shimmer_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,9 +43,7 @@ class _ChatScreenState extends State<ChatScreen> {
         elevation: 0,
         title: Row(
           children: [
-            CircleAvatar(
-              child: Text(widget.chatPreview.receiverName[0]),
-            ),
+           OnlineStatusAvatar(userName: widget.chatPreview.receiverName, userId: widget.chatPreview.receiverid),
             const SizedBox(
               width: 10,
             ),

@@ -1,19 +1,48 @@
-import 'dart:math';
-
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/authentication.dart';
 import 'package:chatgoclient/controllers/chat.dart';
+import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/text.dart';
 import 'package:chatgoclient/ui/screens/chat.dart';
 import 'package:chatgoclient/ui/widgets/common/empty_screen.dart';
+import 'package:chatgoclient/ui/widgets/common/online_status_avatar.dart';
 import 'package:chatgoclient/ui/widgets/loaders/chat_card_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/route_manager.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+    UserMangementController.instance.updateUserOnlineStatus();
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      UserMangementController.instance.updateUserOnlineStatus();
+    } else {
+      UserMangementController.instance.removeUserOnlineStatus();
+    }
+    super.didChangeAppLifecycleState(state);
+  }
+  
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,10 +108,14 @@ class HomeScreen extends StatelessWidget {
                                           ),
                                         );
                                       },
-                                      leading: CircleAvatar(
-                                        child: Text(chatController
+                                      leading: OnlineStatusAvatar(
+                                        userId: chatController
                                             .currentChatPreviews[index]
-                                            .receiverName[0]),
+                                            .receiverid,
+                                        userName: chatController
+                                            .currentChatPreviews[index]
+                                            .receiverName,
+                                            
                                       ),
                                       title: Text(
                                         chatController

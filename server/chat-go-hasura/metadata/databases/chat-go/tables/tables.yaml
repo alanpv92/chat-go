@@ -1,3 +1,4 @@
 - "!include public_chatpreview.yaml"
 - "!include public_chats.yaml"
+- "!include public_useronlinestatus.yaml"
 - "!include public_users.yaml"

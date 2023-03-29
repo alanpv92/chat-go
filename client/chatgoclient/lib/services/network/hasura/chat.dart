@@ -71,4 +71,6 @@ class ChatHasuraService {
         query: HasuraMutation.updateSingleChatByPk(chatId: chatId));
     return response;
   }
+
+
 }
