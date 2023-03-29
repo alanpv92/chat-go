@@ -6,6 +6,7 @@ import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/text.dart';
 import 'package:chatgoclient/ui/screens/chat.dart';
 import 'package:chatgoclient/ui/widgets/common/empty_screen.dart';
+import 'package:chatgoclient/ui/widgets/common/online_status_avatar.dart';
 import 'package:chatgoclient/ui/widgets/loaders/chat_card_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -106,10 +107,13 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                           ),
                                         );
                                       },
-                                      leading: CircleAvatar(
-                                        child: Text(chatController
+                                      leading: OnlineStatusAvatar(
+                                        userId: chatController
                                             .currentChatPreviews[index]
-                                            .receiverName[0]),
+                                            .receiverid,
+                                        userName: chatController
+                                            .currentChatPreviews[index]
+                                            .receiverName,
                                       ),
                                       title: Text(
                                         chatController
