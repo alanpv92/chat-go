@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/chat.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/text.dart';
+import 'package:chatgoclient/services/notifications/notification.dart';
 
 import 'package:chatgoclient/services/storage/app_storage.dart';
 import 'package:chatgoclient/utils/custom_snack_bar.dart';
@@ -22,6 +25,7 @@ class AppController extends BaseController {
 
       final status = await UserMangementController.instance.checkAuthStatus();
       if (status) {
+        await NotificationService.instance.requestNotificationPermission();
         Get.offAllNamed(Routes.homeScreen);
       } else {
         Get.offAllNamed(Routes.authScreen);
@@ -38,6 +42,5 @@ class AppController extends BaseController {
     await UserBoxStorage.instance.deleteToken();
     await UserMangementController.instance.userMangementControllerDisposer();
     await ChatController.instance.chatControllerDispose();
-    
   }
 }

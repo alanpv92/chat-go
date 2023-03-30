@@ -37,7 +37,7 @@ class _OnlineStatusAvatarState extends State<OnlineStatusAvatar> {
         
     //    _snapshot?.close();
     // }
-    
+     
     super.dispose();
   }
 
