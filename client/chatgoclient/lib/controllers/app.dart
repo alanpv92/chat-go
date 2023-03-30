@@ -1,5 +1,3 @@
-
-
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/chat.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
@@ -26,6 +24,7 @@ class AppController extends BaseController {
       final status = await UserMangementController.instance.checkAuthStatus();
       if (status) {
         await NotificationService.instance.requestNotificationPermission();
+        await NotificationService.instance.initFirebaseNotifications();
         Get.offAllNamed(Routes.homeScreen);
       } else {
         Get.offAllNamed(Routes.authScreen);
