@@ -1,5 +1,4 @@
-import 'package:chatgoclient/config/size_config.dart';
-import 'package:chatgoclient/controllers/user_mangement.dart';
+
 import 'package:chatgoclient/data/models/chat_preview.dart';
 import 'package:chatgoclient/data/models/user.dart';
 import 'package:chatgoclient/ui/screens/chat.dart';

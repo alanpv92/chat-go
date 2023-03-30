@@ -3,7 +3,7 @@ import 'package:chatgoclient/controllers/search.dart';
 import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/text.dart';
 import 'package:chatgoclient/utils/debouncer.dart';
-import 'package:easy_localization/easy_localization.dart';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/route_manager.dart';

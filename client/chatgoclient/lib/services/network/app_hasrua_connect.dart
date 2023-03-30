@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:chatgoclient/data/custom%20types/custom_types.dart';
 import 'package:chatgoclient/data/exceptions/app_newtork.dart';
