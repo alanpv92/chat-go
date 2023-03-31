@@ -71,6 +71,10 @@ class UserMangementController {
     });
   }
 
+ initFirbaseNotificationToken()async{
+  
+ }
+
   userMangementControllerDisposer()  {
     _appToken = null;
     
