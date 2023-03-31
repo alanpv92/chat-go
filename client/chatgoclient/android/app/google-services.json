@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1044437569705",
+    "project_id": "chat-go-f1265",
+    "storage_bucket": "chat-go-f1265.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044437569705:android:b49593673da7ff5fa8d9b8",
+        "android_client_info": {
+          "package_name": "com.example.chatgoclient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044437569705-fjk784ntloash2ff51emf6rgvon2fbp8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAoeva3_rPHDoHtUdSXkBT2ziOtCBUCFM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1044437569705-fjk784ntloash2ff51emf6rgvon2fbp8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
