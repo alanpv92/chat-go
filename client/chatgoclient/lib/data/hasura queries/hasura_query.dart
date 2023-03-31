@@ -69,8 +69,10 @@ query getUserChatCount {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   static String getUserLatestChats(
-          {required String senderId, required String receiverId,required int limit}) =>
- '''
+          {required String senderId,
+          required String receiverId,
+          required int limit}) =>
+      '''
 query getLatestUserChats {
   chats(where: {_or: [{sender_id: {_eq: "$senderId"}, receiver_id: {_eq: "$receiverId"}}, {receiver_id: {_eq: "$senderId"}, sender_id: {_eq: "$receiverId"}}]}, order_by: {created_at: desc}, limit: $limit) {
     message
@@ -78,6 +80,19 @@ query getLatestUserChats {
     id
     receiver_id
     sender_id
+  }
+}
+
+
+''';
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  static String getToken({required String userId}) => '''
+
+query MyQuery {
+  usernotifications(where: {user_id: {_eq: "$userId"}}) {
+    notification_token
   }
 }
 

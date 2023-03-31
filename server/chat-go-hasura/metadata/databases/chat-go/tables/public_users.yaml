@@ -38,3 +38,10 @@ array_relationships:
         table:
           name: chats
           schema: public
+  - name: usernotifications
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          name: usernotifications
+          schema: public

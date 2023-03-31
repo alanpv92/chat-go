@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:chatgoclient/data/custom%20types/custom_types.dart';
 import 'package:chatgoclient/data/exceptions/app_newtork.dart';
@@ -24,6 +25,7 @@ class AppHasuraConnect {
         return left(AppNetworkException(
             message: TextManger.instance.randomError, status: 400));
       } else {
+     
         return right(response['data']);
       }
     } catch (e) {
@@ -32,7 +34,8 @@ class AppHasuraConnect {
     }
   }
 
-  Future<Either<AppNetworkException,Map<String,dynamic>>> mutation({required String query}) async {
+  Future<Either<AppNetworkException, Map<String, dynamic>>> mutation(
+      {required String query}) async {
     try {
       final response = await _hasuraConnect.mutation(query);
       if (response['errors'] != null) {

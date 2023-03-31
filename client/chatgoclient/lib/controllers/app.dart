@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/chat.dart';
+import 'package:chatgoclient/controllers/notifications.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/text.dart';
-import 'package:chatgoclient/services/notifications/notification.dart';
 
 import 'package:chatgoclient/services/storage/app_storage.dart';
 import 'package:chatgoclient/utils/custom_snack_bar.dart';
@@ -20,16 +22,16 @@ class AppController extends BaseController {
     try {
       await AppStorage.instance.initAppStorage();
       await UserMangementController.instance.initToken();
-
+   
       final status = await UserMangementController.instance.checkAuthStatus();
       if (status) {
-        await NotificationService.instance.requestNotificationPermission();
-        await NotificationService.instance.initFirebaseNotifications();
+           await NotificationController.instance.initFirebaseNotifications();
         Get.offAllNamed(Routes.homeScreen);
       } else {
         Get.offAllNamed(Routes.authScreen);
       }
     } catch (e) {
+      // log(e.toString());
       CustomSnackBar.instance
           .showError(errorText: TextManger.instance.randomError);
       await Future.delayed(const Duration(seconds: 2));

@@ -69,7 +69,7 @@ class NotificationService {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      getDeviceToken();
+     
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
     } else {
@@ -79,7 +79,7 @@ class NotificationService {
 
   Future<String?> getDeviceToken() async {
     String? token = await _firebaseMessaging.getToken();
-    dev.log(token.toString());
+  
     return token;
   }
 }
