@@ -26,8 +26,9 @@ class FirebaseNotificationService {
         },
         token: token,
       };
+      
      let response= await admin.messaging().send(message);
-     
+     console.log(response);
     } catch (e) {
         console.log("error is",e)
     }

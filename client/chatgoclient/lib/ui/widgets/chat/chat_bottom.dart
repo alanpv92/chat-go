@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 
 class ChatBottom extends StatefulWidget {
   final String receiverId;
-  const ChatBottom({super.key, required this.receiverId});
+  final String senderName;
+  const ChatBottom({super.key, required this.receiverId,required this.senderName});
 
   @override
   State<ChatBottom> createState() => _ChatBottomState();
@@ -51,6 +52,7 @@ class _ChatBottomState extends State<ChatBottom> {
 
                     ChatController.instance.sendChat(
                         message: chatTextEditingController.text,
+                        senderName: widget.senderName,
                         receiverId: widget.receiverId);
                     chatTextEditingController.clear();
                     setState(() {});

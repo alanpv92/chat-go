@@ -1,4 +1,4 @@
-
+import 'dart:developer';
 
 import 'package:chatgoclient/data/custom%20types/custom_types.dart';
 import 'package:chatgoclient/data/interfaces/chat.dart';
@@ -12,12 +12,11 @@ class ChatService implements ChatInterface {
   @override
   Future<SendChatResponse> sendChat(
       {required Map<String, dynamic> chatData}) async {
+   
     final response =
         await _appNetwork.postRequest(path: ApiManger.sendChat, args: chatData);
     return response.fold((l) => left(false), (r) {
       return right(r['id']);
     });
   }
-
-  
 }
