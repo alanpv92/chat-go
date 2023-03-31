@@ -1,0 +1,3 @@
+table:
+  name: usernotifications
+  schema: public
