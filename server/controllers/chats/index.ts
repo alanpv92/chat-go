@@ -29,7 +29,7 @@ const sendChat = async (req: Request, res: Response) => {
     }
 
    let notificationTokenResponse= await HasuraHelper.getInstance().query(HasuraQuery.getUserNotificationToken(receiver_id));
-    console.log(notificationTokenResponse);
+   
    if(notificationTokenResponse['usernotifications'][0]!=null){
      let notificationToken=notificationTokenResponse['usernotifications'][0]['notification_token'];
      notifciationService.getInstance().sendNotification(sender_name,message,notificationToken);

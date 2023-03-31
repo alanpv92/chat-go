@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:chatgoclient/controllers/notifications.dart';
+import 'package:chatgoclient/data/custom%20types/custom_types.dart';
 import 'package:chatgoclient/data/models/user.dart';
 import 'package:chatgoclient/services/network/hasura/users.dart';
 import 'package:chatgoclient/utils/stroage/user_box.dart';
@@ -35,6 +37,7 @@ class UserMangementController {
     await _userBoxStorage.storeId(id: user.userId);
     await _userBoxStorage.storeUserName(userName: user.userName);
     await _userBoxStorage.storeEmail(email: user.email);
+    await NotificationController.instance.initFirebaseNotifications();
     Get.offAllNamed(Routes.homeScreen);
   }
 
@@ -54,10 +57,10 @@ class UserMangementController {
     log(response.toString());
   }
 
-  removeUserOnlineStatus() async {
+ Future<HasuraResponse> removeUserOnlineStatus() async {
     final response =
         await _usersHasuraService.removeUserStatus(userId: user.userId);
-    log(response.toString());
+    return response;
   }
 
   Future<Snapshot?> getSingleUserStatusSnapSnot(
@@ -71,12 +74,7 @@ class UserMangementController {
     });
   }
 
- initFirbaseNotificationToken()async{
-  
- }
-
-  userMangementControllerDisposer()  {
+  userMangementControllerDisposer() {
     _appToken = null;
-    
   }
 }

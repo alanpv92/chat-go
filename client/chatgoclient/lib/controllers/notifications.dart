@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:chatgoclient/controllers/user_mangement.dart';
+import 'package:chatgoclient/data/custom%20types/custom_types.dart';
 import 'package:chatgoclient/services/network/hasura/notification.dart';
 import 'package:chatgoclient/services/notifications/notification.dart';
 
@@ -44,5 +45,12 @@ class NotificationController {
         }
       });
     }
+  }
+
+ Future<HasuraResponse> removeNotificationToken() async {
+    final response =
+        await _notificationHasuraService.removeUserNotificationToken(
+            userId: UserMangementController.instance.user.userId);
+    return response;
   }
 }

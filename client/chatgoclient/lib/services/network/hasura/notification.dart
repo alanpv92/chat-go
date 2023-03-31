@@ -33,4 +33,11 @@ class NotificationHasuraService {
             userId: userId, token: token));
     return response;
   }
+
+  Future<HasuraResponse> removeUserNotificationToken(
+      {required String userId}) async {
+    final response = await _appHasuraConnect.mutation(
+        query: HasuraMutation.deleteUserNotificationToken(userId: userId));
+    return response;
+  }
 }

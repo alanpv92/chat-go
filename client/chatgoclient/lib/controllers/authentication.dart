@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/controllers/app.dart';
 import 'package:chatgoclient/controllers/base.dart';
+import 'package:chatgoclient/controllers/notifications.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/data/custom%20types/custom_types.dart';
 import 'package:chatgoclient/data/enums/app_enums.dart';
@@ -108,7 +111,18 @@ class AuthenticationController extends BaseController {
 
   logoutUser() async {
     _authMode = AuthMode.login;
-    await UserMangementController.instance.removeUserOnlineStatus();
+    final result = await Future.wait<HasuraResponse>([
+      UserMangementController.instance.removeUserOnlineStatus(),
+      NotificationController.instance.removeNotificationToken()
+    ]);
+    log(result.toString());
+    for (var element in result) {
+      if (element.isLeft()) {
+        CustomSnackBar.instance
+            .showError(errorText: TextManger.instance.randomErrorTryAgain);
+        return;
+      }
+    }
     AppController.instance.disposeAppOnLogOut();
     Get.offAllNamed(Routes.authScreen);
   }
