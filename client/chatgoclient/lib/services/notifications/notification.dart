@@ -4,6 +4,10 @@ import 'package:app_settings/app_settings.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/route_manager.dart';
+
+import '../../data/models/chat_preview.dart';
+import '../../ui/screens/chat.dart';
 
 @pragma('vm:entry-point')
 Future firebaseMessagingBackgroundHandler(RemoteMessage message) async {}
@@ -27,7 +31,11 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSetting,
       onDidReceiveNotificationResponse: (details) {
-        dev.log(details.payload.toString());
+        ChatPreview chatPreview = ChatPreview(
+            receiverName: message.notification!.title!,
+            receiverid: message.data['reciever_id'],
+            lastMessage: message.notification!.body!);
+        Get.to(() => ChatScreen(chatPreview: chatPreview));
       },
     );
   }
