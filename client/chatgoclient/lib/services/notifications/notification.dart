@@ -26,7 +26,9 @@ class NotificationService {
         android: andriodInitializationSettings, iOS: iosIntializationSettings);
     await _flutterLocalNotificationsPlugin.initialize(
       initializationSetting,
-      onDidReceiveNotificationResponse: (details) {},
+      onDidReceiveNotificationResponse: (details) {
+        dev.log(details.payload.toString());
+      },
     );
   }
 
@@ -69,7 +71,6 @@ class NotificationService {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-     
     } else if (settings.authorizationStatus ==
         AuthorizationStatus.provisional) {
     } else {
@@ -79,7 +80,7 @@ class NotificationService {
 
   Future<String?> getDeviceToken() async {
     String? token = await _firebaseMessaging.getToken();
-  
+
     return token;
   }
 }
