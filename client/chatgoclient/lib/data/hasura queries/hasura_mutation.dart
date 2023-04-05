@@ -53,4 +53,53 @@ mutation updateReadStatusForSingleChat {
 ''';
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  static String insertUserNotificationToken(
+          {required String token, required String userId}) =>
+      '''
+
+
+ mutation insertNotificationToken {
+  insert_usernotifications_one(object: {notification_token: "$token", user_id: "$userId"}) {
+    id
+  }
+}
+
+
+
+
+''';
+
+  ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  static String updateUserNotificationToken(
+          {required String userId, required String token}) =>
+      '''
+
+mutation updateUserNotificationToken {
+  update_usernotifications(where: {user_id: {_eq: "$userId"}}, _set: {notification_token: "$token"}) {
+    affected_rows
+  }
+}
+
+   
+
+''';
+
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  static String deleteUserNotificationToken({required String userId}) => '''
+
+
+mutation deleteUserNotificationToken {
+  delete_usernotifications(where: {user_id: {_eq: "$userId"}}) {
+    affected_rows
+  }
+}
+
+
+
+''';
+
+  /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

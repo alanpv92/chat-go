@@ -24,7 +24,12 @@ dependencies:
   hasura_connect: ^4.0.0+4
   infinite_scroll_pagination: ^3.2.0
   shimmer: ^2.0.0
-
+  firebase_core: ^2.8.0
+  firebase_messaging: ^14.3.0
+  firebase_analytics: ^10.1.6
+  flutter_local_notifications: ^13.0.0
+  app_settings: ^4.2.0
+   
 dev_dependencies:
   flutter_test:
     sdk: flutter

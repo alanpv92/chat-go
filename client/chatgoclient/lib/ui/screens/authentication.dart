@@ -13,6 +13,7 @@ class AuthenticationScreen extends StatelessWidget {
     final theme = Theme.of(context);
    
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
           child: Padding(
         padding: EdgeInsets.symmetric(

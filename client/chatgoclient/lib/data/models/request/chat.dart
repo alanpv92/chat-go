@@ -3,13 +3,20 @@ class ChatRequest {
   final String senderId;
   final String receiverId;
   final String? chatPreviewId;
+  final String senderName;
 
-  ChatRequest(
-      {required this.message,
-      required this.receiverId,
-      required this.senderId,
-      this.chatPreviewId,
-      });
-  getRequestData() =>
-      {"message": message, "sender_id": senderId, "receiver_id": receiverId,"chat_preview_id":chatPreviewId};
+  ChatRequest({
+    required this.message,
+    required this.receiverId,
+    required this.senderId,
+    this.chatPreviewId,
+    required this.senderName
+  });
+  getRequestData() => {
+        "message": message,
+        "sender_id": senderId,
+        "receiver_id": receiverId,
+        "chat_preview_id": chatPreviewId,
+        "sender_name":senderName
+      };
 }

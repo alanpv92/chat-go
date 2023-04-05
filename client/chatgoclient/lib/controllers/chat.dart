@@ -202,7 +202,10 @@ class ChatController extends BaseController {
     }
   }
 
-  sendChat({required String message, required String receiverId}) async {
+  sendChat(
+      {required String message,
+      required String receiverId,
+      required String senderName}) async {
     final dummyChat = Chat(
         chatId: UniqueKey().toString(),
         isReceiverRead: false,
@@ -218,6 +221,7 @@ class ChatController extends BaseController {
         chatData: ChatRequest(
                 message: message,
                 receiverId: receiverId,
+                senderName: senderName,
                 chatPreviewId: getChatPreview(receiverId: receiverId)?.id,
                 senderId: UserMangementController.instance.user.userId)
             .getRequestData());
@@ -255,16 +259,9 @@ class ChatController extends BaseController {
     return null;
   }
 
-
-  
-
-
-
   closeChatSnapShot() {
     chatSnapShot.close();
   }
-
-
 
   chatControllerDispose() {
     userChats.clear();

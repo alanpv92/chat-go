@@ -1,5 +1,6 @@
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/chat.dart';
+import 'package:chatgoclient/controllers/user_mangement.dart';
 
 import 'package:chatgoclient/data/models/chat_preview.dart';
 import 'package:chatgoclient/ui/widgets/chat/chat_bottom.dart';
@@ -119,6 +120,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 ChatBottom(
                   receiverId: widget.chatPreview.receiverid,
+                  senderName: UserMangementController.instance.user.userName,
                 ),
               ],
             );

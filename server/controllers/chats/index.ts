@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import HasuraMutation from "../../hasura_queries/mutation";
+import HasuraQuery from "../../hasura_queries/query";
 import HasuraHelper from "../../helpers/hasura/hasura";
+import notifciationService from "../../services/notification/index";
 
 const sendChat = async (req: Request, res: Response) => {
   try {
-    let { sender_id, receiver_id, message, chat_preview_id } = req.body;
-
+    let { sender_id, receiver_id, message, chat_preview_id,sender_name } = req.body;
     let response = await HasuraHelper.getInstance().query(
       HasuraMutation.sendChat(message, sender_id, receiver_id)
     );
@@ -25,6 +26,15 @@ const sendChat = async (req: Request, res: Response) => {
         )
       );
     }
+
+   let notificationTokenResponse= await HasuraHelper.getInstance().query(HasuraQuery.getUserNotificationToken(receiver_id));
+   
+   if(notificationTokenResponse['usernotifications'][0]!=null){
+     let notificationToken=notificationTokenResponse['usernotifications'][0]['notification_token'];
+     notifciationService.getInstance().sendNotification(sender_name,message,notificationToken,sender_id);
+
+     
+   }
 
     if (response["insert_chats"]["affected_rows"] >= 1) {
       res.json({

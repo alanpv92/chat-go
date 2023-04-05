@@ -22,6 +22,7 @@ class CommonText {
   String emptyBoxText = tr('empty_text');
   String retry = "retry";
   String chatCountError = tr('chat_count_error');
+  String randomErrorTryAgain = tr('random_error_try_again');
 }
 
 class TextManger with ErrorText, AuthText, CommonText {

@@ -14,6 +14,22 @@ class HasuraQuery {
         
         `;
   }
+
+
+
+  static getUserNotificationToken(userId:String){
+    return `
+    
+    
+    query MyQuery {
+      usernotifications(where: {user_id: {_eq: "${userId}"}}) {
+        notification_token
+      }
+    }
+    
+    
+    `;
+  }
 }
 
 export default HasuraQuery;

@@ -1,11 +1,12 @@
-
 import 'package:chatgoclient/controllers/chat.dart';
 import 'package:chatgoclient/manager/text.dart';
 import 'package:flutter/material.dart';
 
 class ChatBottom extends StatefulWidget {
   final String receiverId;
-  const ChatBottom({super.key, required this.receiverId});
+  final String senderName;
+  const ChatBottom(
+      {super.key, required this.receiverId, required this.senderName});
 
   @override
   State<ChatBottom> createState() => _ChatBottomState();
@@ -40,6 +41,8 @@ class _ChatBottomState extends State<ChatBottom> {
         child: TextFormField(
           autocorrect: false,
           controller: chatTextEditingController,
+          keyboardType: TextInputType.text,
+         
           style: Theme.of(context).textTheme.headlineSmall,
           decoration: InputDecoration(
               hintText: TextManger.instance.sendChatHint,
@@ -51,6 +54,7 @@ class _ChatBottomState extends State<ChatBottom> {
 
                     ChatController.instance.sendChat(
                         message: chatTextEditingController.text,
+                        senderName: widget.senderName,
                         receiverId: widget.receiverId);
                     chatTextEditingController.clear();
                     setState(() {});
