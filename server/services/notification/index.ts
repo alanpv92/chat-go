@@ -17,23 +17,31 @@ class FirebaseNotificationService {
     return this.instance;
   }
 
-  async sendNotification(title: string, body: string, token: string) {
+  async sendNotification(
+    title: string,
+    body: string,
+    token: string,
+    recevierId: string
+  ) {
     try {
       const message: Message = {
         notification: {
           title: title,
           body: body,
         },
+        data: {
+          reciever_id: recevierId,
+        },
+
         token: token,
       };
-      
-     let response= await admin.messaging().send(message);
-     console.log(response);
+
+      let response = await admin.messaging().send(message);
+      console.log(response);
     } catch (e) {
-        console.log("error is",e)
+      console.log("error is", e);
     }
   }
 }
-
 
 export default FirebaseNotificationService;

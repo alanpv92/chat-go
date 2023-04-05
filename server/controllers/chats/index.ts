@@ -7,7 +7,6 @@ import notifciationService from "../../services/notification/index";
 const sendChat = async (req: Request, res: Response) => {
   try {
     let { sender_id, receiver_id, message, chat_preview_id,sender_name } = req.body;
-   console.log("recevier name is ",sender_name)
     let response = await HasuraHelper.getInstance().query(
       HasuraMutation.sendChat(message, sender_id, receiver_id)
     );
@@ -32,7 +31,7 @@ const sendChat = async (req: Request, res: Response) => {
    
    if(notificationTokenResponse['usernotifications'][0]!=null){
      let notificationToken=notificationTokenResponse['usernotifications'][0]['notification_token'];
-     notifciationService.getInstance().sendNotification(sender_name,message,notificationToken);
+     notifciationService.getInstance().sendNotification(sender_name,message,notificationToken,sender_id);
 
      
    }

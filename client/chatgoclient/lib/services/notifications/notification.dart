@@ -48,6 +48,7 @@ class NotificationService {
         const DarwinNotificationDetails();
     NotificationDetails notificationDetails = NotificationDetails(
         android: androidNotificationDetails, iOS: darwinNotificationDetails);
+    dev.log(message.data.toString());
     _flutterLocalNotificationsPlugin.show(0, message.notification!.title,
         message.notification!.body, notificationDetails);
   }

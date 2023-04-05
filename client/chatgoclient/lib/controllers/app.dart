@@ -1,5 +1,3 @@
-
-
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/chat.dart';
 import 'package:chatgoclient/controllers/notifications.dart';
@@ -22,10 +20,11 @@ class AppController extends BaseController {
     try {
       await AppStorage.instance.initAppStorage();
       await UserMangementController.instance.initToken();
-   
+
       final status = await UserMangementController.instance.checkAuthStatus();
       if (status) {
-           await NotificationController.instance.initFirebaseNotifications();
+        await NotificationController.instance.initFirebaseNotifications();
+        NotificationController.instance.checkForNotification();
         Get.offAllNamed(Routes.homeScreen);
       } else {
         Get.offAllNamed(Routes.authScreen);
