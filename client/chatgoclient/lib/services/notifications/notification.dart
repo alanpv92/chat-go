@@ -44,6 +44,7 @@ class NotificationService {
     AndroidNotificationChannel androidNotificationChannel =
         AndroidNotificationChannel(Random.secure().nextInt(100000).toString(),
             'High Importance Notifications',
+            
             importance: Importance.max);
     AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(androidNotificationChannel.id.toString(),
