@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/authentication.dart';
 import 'package:chatgoclient/manager/text.dart';
@@ -21,7 +23,9 @@ class _AuthBoxState extends State<AuthBox> {
 
   @override
   void dispose() {
-    AuthenticationController.instance.disposeTextController();
+    if (mounted) {
+      AuthenticationController.instance.disposeTextController();
+    }
     super.dispose();
   }
 
@@ -35,12 +39,13 @@ class _AuthBoxState extends State<AuthBox> {
           padding: const EdgeInsets.all(12.0),
           child: Consumer(builder: (context, ref, _) {
             final authController = ref.watch(authenticationProvider);
+           
             return Form(
               key: authController.formKey,
               child: Column(
                 children: [
                   Visibility(
-                   visible: authController.getAuthUserNameVisibility(),
+                    visible: authController.getAuthUserNameVisibility(),
                     child: CustomTextFormField(
                       controller: authController.userNameController,
                       hintText: TextManger.instance.userNameHint,
@@ -65,11 +70,15 @@ class _AuthBoxState extends State<AuthBox> {
                   ),
                   SizedBox(
                       width: SizeConfig.safeBlockHorizontal * 45,
-                      child:authController.isloading?const Center(child: CircularProgressIndicator(),) :ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: const StadiumBorder()),
-                          onPressed: authController.authenticateUser,
-                          child: Text(authController.getAuthText())))
+                      child: authController.isloading
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: const StadiumBorder()),
+                              onPressed: authController.authenticateUser,
+                              child: Text(authController.getAuthText())))
                 ],
               ),
             );

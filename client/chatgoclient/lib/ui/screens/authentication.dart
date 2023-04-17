@@ -1,5 +1,6 @@
 import 'package:chatgoclient/config/size_config.dart';
 import 'package:chatgoclient/controllers/authentication.dart';
+import 'package:chatgoclient/manager/text.dart';
 
 import 'package:chatgoclient/ui/widgets/authentication/auth_box.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ class AuthenticationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-   
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -30,7 +30,7 @@ class AuthenticationScreen extends StatelessWidget {
                   height: SizeConfig.safeBlockVertical * 10,
                   child: FittedBox(
                       child: Text(
-                    "Chat Go",
+                    TextManger.instance.appTitle,
                     style: theme.textTheme.headlineLarge,
                   ))),
               const SizedBox(
