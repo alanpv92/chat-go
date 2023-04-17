@@ -20,7 +20,6 @@ class AppController extends BaseController {
     try {
       await AppStorage.instance.initAppStorage();
       await UserMangementController.instance.initToken();
-
       final status = await UserMangementController.instance.checkAuthStatus();
       if (status) {
         await NotificationController.instance.initFirebaseNotifications();
@@ -30,9 +29,7 @@ class AppController extends BaseController {
         Get.offAllNamed(Routes.authScreen);
       }
     } catch (e) {
-      // log(e.toString());
-      CustomSnackBar.instance
-          .showError(errorText: TextManger.instance.randomError);
+      CustomSnackBar.instance.showError(errorText: TextManger.instance.randomError);
       await Future.delayed(const Duration(seconds: 2));
       SystemNavigator.pop();
     }

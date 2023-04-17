@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:chatgoclient/controllers/notifications.dart';
 import 'package:chatgoclient/data/custom%20types/custom_types.dart';
+import 'package:chatgoclient/data/exceptions/app.dart';
 import 'package:chatgoclient/data/models/user.dart';
 import 'package:chatgoclient/services/network/hasura/users.dart';
 import 'package:chatgoclient/utils/stroage/user_box.dart';
@@ -24,11 +25,15 @@ class UserMangementController {
   String? get token => _appToken;
 
   checkAuthStatus() async {
-    if (_appToken != null) {
-      _currentuser = await _userBoxStorage.getUser();
-      return true;
-    } else {
-      return false;
+    try {
+      if (_appToken != null) {
+        _currentuser = await _userBoxStorage.getUser();
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -42,8 +47,12 @@ class UserMangementController {
   }
 
   initToken() async {
-    final tokenFromStorage = await _userBoxStorage.getToken() as String?;
-    _appToken = tokenFromStorage;
+    try {
+      final tokenFromStorage = await _userBoxStorage.getToken() as String?;
+      _appToken = tokenFromStorage;
+    } catch (e) {
+      throw AppException();
+    }
   }
 
   storeToken({required String token}) async {
@@ -57,7 +66,7 @@ class UserMangementController {
     log(response.toString());
   }
 
- Future<HasuraResponse> removeUserOnlineStatus() async {
+  Future<HasuraResponse> removeUserOnlineStatus() async {
     final response =
         await _usersHasuraService.removeUserStatus(userId: user.userId);
     return response;
