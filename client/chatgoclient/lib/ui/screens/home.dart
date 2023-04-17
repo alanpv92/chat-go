@@ -4,9 +4,8 @@ import 'package:chatgoclient/controllers/chat.dart';
 import 'package:chatgoclient/controllers/user_mangement.dart';
 import 'package:chatgoclient/manager/route.dart';
 import 'package:chatgoclient/manager/text.dart';
-import 'package:chatgoclient/ui/screens/chat.dart';
 import 'package:chatgoclient/ui/widgets/common/empty_screen.dart';
-import 'package:chatgoclient/ui/widgets/common/online_status_avatar.dart';
+import 'package:chatgoclient/ui/widgets/home/chat_preview_card.dart';
 import 'package:chatgoclient/ui/widgets/loaders/chat_card_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
     }
     super.didChangeAppLifecycleState(state);
   }
-  
 
   @override
   void dispose() {
@@ -99,44 +97,8 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                                 )
                               : ListView.separated(
                                   itemBuilder: (context, index) {
-                                    return ListTile(
-                                      onTap: () {
-                                        Get.to(
-                                          () => ChatScreen(
-                                            chatPreview: chatController
-                                                .currentChatPreviews[index],
-                                          ),
-                                        );
-                                      },
-                                      leading: OnlineStatusAvatar(
-                                        userId: chatController
-                                            .currentChatPreviews[index]
-                                            .receiverid,
-                                        userName: chatController
-                                            .currentChatPreviews[index]
-                                            .receiverName,
-                                            
-                                      ),
-                                      title: Text(
-                                        chatController
-                                            .currentChatPreviews[index]
-                                            .receiverName,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineSmall!
-                                            .copyWith(color: Colors.black),
-                                      ),
-                                      subtitle: Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Text(
-                                          chatController
-                                              .currentChatPreviews[index]
-                                              .lastMessage,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium,
-                                        ),
-                                      ),
+                                    return ChatPreviewCard(
+                                      index: index,
                                     );
                                   },
                                   itemCount:
