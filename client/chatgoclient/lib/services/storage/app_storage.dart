@@ -21,32 +21,46 @@ class AppStorage implements AppStorageInterface {
 
   @override
   Future deleteData({required String boxName, required String key}) async {
-    if (!Hive.isBoxOpen(boxName)) {
-      await Hive.openBox(boxName);
-    } else {
-      final value = await Hive.box(boxName).delete(key);
-      return value;
+    try {
+      if (!Hive.isBoxOpen(boxName)) {
+        await Hive.openBox(boxName);
+      } else {
+        final value = await Hive.box(boxName).delete(key);
+        return value;
+      }
+    } catch (e) {
+      throw AppException();
     }
   }
 
   @override
   Future readData({required String boxName, required String key}) async {
-    if (!Hive.isBoxOpen(boxName)) {
-      await Hive.openBox(boxName);
-    } else {
-      final value = await Hive.box(boxName).get(key);
-      return value;
+    try {
+      if (!Hive.isBoxOpen(boxName)) {
+        await Hive.openBox(boxName);
+      } else {
+        final value = await Hive.box(boxName).get(key);
+        return value;
+      }
+    } catch (e) {
+      throw AppException();
     }
   }
 
   @override
   Future writeData(
-      {required String boxName, required String key,required dynamic value}) async {
-    if (!Hive.isBoxOpen(boxName)) {
-      await Hive.openBox(boxName);
-    } else {
-      final data = await Hive.box(boxName).put(key, value);
-      return data;
+      {required String boxName,
+      required String key,
+      required dynamic value}) async {
+    try {
+      if (!Hive.isBoxOpen(boxName)) {
+        await Hive.openBox(boxName);
+      } else {
+        final data = await Hive.box(boxName).put(key, value);
+        return data;
+      }
+    } catch (e) {
+      throw AppException();
     }
   }
 }

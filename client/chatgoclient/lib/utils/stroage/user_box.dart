@@ -17,13 +17,17 @@ class UserBoxStorage {
   }
 
   getToken() async {
-    final token = await _appStorage.readData(
-        boxName: HiveManger.instance.userBox,
-        key: HiveManger.instance.tokenKey);
-    if (token != null && token is String && token != '') {
-      return token;
+    try {
+      final token = await _appStorage.readData(
+          boxName: HiveManger.instance.userBox,
+          key: HiveManger.instance.tokenKey);
+      if (token != null && token is String && token != '') {
+        return token;
+      }
+      return null;
+    } catch (e) {
+      rethrow;
     }
-    return null;
   }
 
   deleteToken() async {
@@ -40,10 +44,14 @@ class UserBoxStorage {
   }
 
   getId() async {
-    final userId = await _appStorage.readData(
-        boxName: HiveManger.instance.userBox,
-        key: HiveManger.instance.userIdKey);
-    return userId;
+    try {
+      final userId = await _appStorage.readData(
+          boxName: HiveManger.instance.userBox,
+          key: HiveManger.instance.userIdKey);
+      return userId;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   storeUserName({required String userName}) async {
@@ -54,10 +62,14 @@ class UserBoxStorage {
   }
 
   getUserName() async {
-    final userName = _appStorage.readData(
-        boxName: HiveManger.instance.userBox,
-        key: HiveManger.instance.userNameKey);
-    return userName;
+    try {
+      final userName = _appStorage.readData(
+          boxName: HiveManger.instance.userBox,
+          key: HiveManger.instance.userNameKey);
+      return userName;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   storeEmail({required String email}) async {
@@ -68,16 +80,24 @@ class UserBoxStorage {
   }
 
   getEmail() {
-    final email = _appStorage.readData(
-        boxName: HiveManger.instance.userBox,
-        key: HiveManger.instance.userEmail);
-    return email;
+    try {
+      final email = _appStorage.readData(
+          boxName: HiveManger.instance.userBox,
+          key: HiveManger.instance.userEmail);
+      return email;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   getUser() async {
-    final String id = await getId();
-    final String email = await getEmail();
-    final String userName = await getUserName();
-    return User(email: email, userId: id, userName: userName);
+    try {
+      final String id = await getId();
+      final String email = await getEmail();
+      final String userName = await getUserName();
+      return User(email: email, userId: id, userName: userName);
+    } catch (e) {
+      rethrow;
+    }
   }
 }

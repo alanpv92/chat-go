@@ -13,7 +13,8 @@ class CustomTextFormField extends StatelessWidget {
       required this.hintText,
       this.iconData,
       this.isPass = false,
-      this.onPressed, this.isPasswordHidden=false});
+      this.onPressed,
+      this.isPasswordHidden = false});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class CustomTextFormField extends StatelessWidget {
           suffixIcon: IconButton(
               onPressed: onPressed,
               icon: Icon(iconData),
-              color: isPasswordHidden ? null : Colors.blue)),
+              color: isPasswordHidden ? Colors.grey : Colors.blue)),
     );
   }
 }

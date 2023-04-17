@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chatgoclient/controllers/app.dart';
 import 'package:chatgoclient/controllers/base.dart';
 import 'package:chatgoclient/controllers/notifications.dart';
@@ -58,6 +56,7 @@ class AuthenticationController extends BaseController {
   }
 
   toggleAuthMode() {
+    // isPassHidden = true;
     if (_authMode == AuthMode.login) {
       _authMode = AuthMode.register;
       _authButtonText = TextManger.instance.authRegisterButtonText;
@@ -115,7 +114,6 @@ class AuthenticationController extends BaseController {
       UserMangementController.instance.removeUserOnlineStatus(),
       NotificationController.instance.removeNotificationToken()
     ]);
-    log(result.toString());
     for (var element in result) {
       if (element.isLeft()) {
         CustomSnackBar.instance

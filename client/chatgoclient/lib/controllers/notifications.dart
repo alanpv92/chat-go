@@ -22,34 +22,37 @@ class NotificationController {
     await NotificationService.instance.requestNotificationPermission();
     await initFirebaseNotificationTokens();
     await NotificationService.instance.initFirebaseNotifications();
-    
   }
 
   initFirebaseNotificationTokens() async {
-    final String? token = await _notificationService.getDeviceToken();
+    try {
+      final String? token = await _notificationService.getDeviceToken();
 
-    if (token != null) {
-      final response = await _notificationHasuraService.getUserToken(
-          userId: UserMangementController.instance.user.userId);
+      if (token != null) {
+        final response = await _notificationHasuraService.getUserToken(
+            userId: UserMangementController.instance.user.userId);
 
-      await response.fold((l) async {
-        //handle error case
-        return;
-      }, (r) async {
-        log(r.toString());
-        final userNotificationToken = r['usernotifications'] as List;
-        if (userNotificationToken.isEmpty) {
-          await _notificationHasuraService.insertUserNotificationToken(
-              userId: UserMangementController.instance.user.userId,
-              token: token);
-        } else {
-          if (userNotificationToken[0]['notification_token'] != token) {
-            await _notificationHasuraService.updateUserNotificationToken(
+        await response.fold((l) async {
+          //handle error case
+          return;
+        }, (r) async {
+          log(r.toString());
+          final userNotificationToken = r['usernotifications'] as List;
+          if (userNotificationToken.isEmpty) {
+            await _notificationHasuraService.insertUserNotificationToken(
                 userId: UserMangementController.instance.user.userId,
                 token: token);
+          } else {
+            if (userNotificationToken[0]['notification_token'] != token) {
+              await _notificationHasuraService.updateUserNotificationToken(
+                  userId: UserMangementController.instance.user.userId,
+                  token: token);
+            }
           }
-        }
-      });
+        });
+      }
+    } catch (e) {
+      log('Notifiaction init error');
     }
   }
 
@@ -61,7 +64,7 @@ class NotificationController {
           receiverName: intialMessage.notification!.title!,
           receiverid: intialMessage.data['reciever_id'],
           lastMessage: intialMessage.notification!.body!);
-      Get.to(()=>ChatScreen(chatPreview: chatPreview));        
+      Get.to(() => ChatScreen(chatPreview: chatPreview));
     }
   }
 
